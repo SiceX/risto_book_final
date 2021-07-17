@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from risto_book_final.views import maintenance
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('maintenance', maintenance, name='maintenance'),
+    path('', maintenance, name='maintenance')
 ]
