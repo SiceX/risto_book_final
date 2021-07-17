@@ -32,6 +32,7 @@
         <option value="$MODULE_DIR$/templates" />
         <option value="$MODULE_DIR$/booking/templates" />
         <option value="$MODULE_DIR$/booking/templates/booking" />
+        <option value="$MODULE_DIR$/booking/templates/booking/tavolo" />
       </list>
     </option>
   </component>

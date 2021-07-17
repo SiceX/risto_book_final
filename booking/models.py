@@ -18,9 +18,12 @@ class Tavolo(models.Model):
 	class Meta:
 		verbose_name_plural = 'Tavoli'
 
-	def __str__(self):
+	def get_display_stato(self):
 		state = [tupla for tupla in STATO_TAVOLO_CHOICES if tupla[0] == self.stato][0]
-		return f'{self.nome} - {state[1]}'
+		return state[1]
+
+	def __str__(self):
+		return f'{self.nome} - {self.get_display_stato()} - {self.pk}'
 
 
 class Prenotazione(models.Model):

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}Tavolo: {{ object.nome }}{% endblock %}
+
+
+{% block content %}
+	<h1>Tavolo: {{ object.nome }}</h1>
+	<p>Stato: {{ object.get_display_stato }}</p>
+{% endblock %}

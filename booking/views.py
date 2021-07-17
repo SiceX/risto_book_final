@@ -1,10 +1,11 @@
 import logging
 from django.shortcuts import render
-from django.views.generic import TemplateView
-
+from django.views.generic import TemplateView, DetailView
+from booking.models import Tavolo
 
 _logger = logging.getLogger(__name__)
 
 
-# class ViewTavolo(TemplateView):
-# 	template_name = ''
+class TavoloDetail(DetailView):
+	model = Tavolo
+	template_name = 'booking/tavolo/detail.html'
