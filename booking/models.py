@@ -4,10 +4,16 @@ from django.db import models
 # Create your models here.
 
 
-class Tavolo(models.Model):
-	stato = models.CharField(max_length=1)
-	nome = models.CharField(max_length=5)
+STATO_TAVOLO_CHOICES = [
+	('L', 'Libero'),
+	('P', 'Prenotato'),
+	('D', 'Disabilitato')
+]
 
+
+class Tavolo(models.Model):
+	stato = models.CharField(max_length=1, choices=STATO_TAVOLO_CHOICES)
+	nome = models.CharField(max_length=5)
 
 
 class Prenotazione(models.Model):
@@ -16,4 +22,4 @@ class Prenotazione(models.Model):
 		'Tavolo',
 		on_delete=models.CASCADE
 	)
-# utente
+	# utente
