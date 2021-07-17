@@ -1,3 +1,4 @@
+# noinspection SpellCheckingInspection
 """risto_book_final URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -15,11 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from risto_book_final.views import maintenance
+from risto_book_final.views import maintenance, Home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('maintenance', maintenance, name='maintenance'),
-    path('', maintenance, name='maintenance'),
+    path('', Home.as_view(), name='home'),
     path('booking/', include('booking.urls'))
 ]
