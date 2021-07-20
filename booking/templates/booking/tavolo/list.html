@@ -1,0 +1,21 @@
+{% extends 'base_list.html' %}
+
+<!-- Magari qua ci facciamo la lista per le prenotazioni? -->
+
+{% block list_title %}Tavoli{% endblock %}
+
+{% block content_title %}Tavoli{% endblock %}
+
+{% block table_head %}
+	<th>Nome</th>
+	<th>Stato</th>
+{% endblock %}
+
+{% block table_body %}
+	{% for tavolo in object_list %}
+		<tr>
+			<td>{{ tavolo.nome }}</td>
+			<td>{{ tavolo.stato }}</td>
+		</tr>
+	{% endfor %}
+{% endblock %}
