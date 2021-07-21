@@ -9,8 +9,8 @@ STATO_TAVOLO_CHOICES = [
 
 
 class Tavolo(models.Model):
+	nome = models.CharField(max_length=5, primary_key=True)
 	stato = models.CharField(max_length=1, choices=STATO_TAVOLO_CHOICES)
-	nome = models.CharField(max_length=5)
 
 	class Meta:
 		verbose_name_plural = 'Tavoli'

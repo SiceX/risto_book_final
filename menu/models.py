@@ -3,7 +3,7 @@ from django.db import models
 
 class Piatto(models.Model):
 	nome = models.CharField(max_length=50)
-	descrizione = models.CharField(max_length=500)
+	descrizione = models.CharField(max_length=500, blank=True)
 
 	class Meta:
 		verbose_name_plural = 'Piatti'
