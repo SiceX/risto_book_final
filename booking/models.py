@@ -1,9 +1,6 @@
 from django.db import models
 
 
-# Create your models here.
-
-
 STATO_TAVOLO_CHOICES = [
 	('L', 'Libero'),
 	('P', 'Prenotato'),

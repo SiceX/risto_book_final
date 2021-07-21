@@ -9,6 +9,7 @@
 {% block table_head %}
 	<th>Nome</th>
 	<th>Stato</th>
+	<th>Dettaglio</th>
 {% endblock %}
 
 {% block table_body %}
@@ -16,6 +17,7 @@
 		<tr>
 			<td>{{ tavolo.nome }}</td>
 			<td>{{ tavolo.stato }}</td>
+			<td><a href="{% url 'booking:tavolo-detail' tavolo.pk %}">Dettaglio</a> </td>
 		</tr>
 	{% endfor %}
 {% endblock %}

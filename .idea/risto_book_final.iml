@@ -33,6 +33,9 @@
         <option value="$MODULE_DIR$/booking/templates" />
         <option value="$MODULE_DIR$/booking/templates/booking" />
         <option value="$MODULE_DIR$/booking/templates/booking/tavolo" />
+        <option value="$MODULE_DIR$/menu/templates" />
+        <option value="$MODULE_DIR$/menu/templates/menu" />
+        <option value="$MODULE_DIR$/menu/templates/menu/piatto" />
       </list>
     </option>
   </component>
