@@ -2,15 +2,16 @@ from django.db import models
 
 
 STATO_TAVOLO_CHOICES = [
-	('L', 'Libero'),
-	('P', 'Prenotato'),
+	# ('L', 'Libero'),
+	# ('P', 'Prenotato'),
+	('A', 'Abilitato'),
 	('D', 'Disabilitato')
 ]
 
 
 class Tavolo(models.Model):
 	nome = models.CharField(max_length=5, primary_key=True)
-	stato = models.CharField(max_length=1, choices=STATO_TAVOLO_CHOICES)
+	stato = models.CharField(max_length=1, choices=STATO_TAVOLO_CHOICES, default='A')
 
 	class Meta:
 		verbose_name_plural = 'Tavoli'
