@@ -4,8 +4,9 @@
 
 
 {% block content %}
+	<h2>Aggiungi nuovo tavolo</h2>
 	<form method="post">{% csrf_token %}
-		{{ form }}
+		{{ form.as_p }}
 		<input type="submit" value="Aggiungi">
 	</form>
 {% endblock %}

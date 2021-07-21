@@ -1,0 +1,27 @@
+{% extends 'base_list.html' %}
+
+{% block list_title %}Dashboard Prenotazioni{% endblock %}
+
+{% block content_title %}Dashboard Prenotazioni{% endblock %}
+
+{% block table_head %}
+	<th>Nome</th>
+	<th>Abilitato/Disabilitato</th>
+	<th>Stato</th>
+{% endblock %}
+
+{% block table_body %}
+	{% for tavolo in object_list %}
+		<tr>
+			<td>{{ tavolo.nome }}</td>
+			<td>{{ tavolo.stato }}</td>
+			<td>
+				{% if tavolo.nome in tavoli_prenotati %}
+					Prenotato
+				{% else %}
+					Libero
+				{% endif %}
+			</td>
+		</tr>
+	{% endfor %}
+{% endblock %}

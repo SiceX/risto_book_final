@@ -12,7 +12,11 @@
 	<h1>Benvenuto su Risto Booker</h1>
 	<p>Il modo più semplice per prenotare la tua cena perfetta!</p>
 
-	<a href="{% url 'booking:tavolo-list' %}">Lista tavoli</a>
+	{% now "Y" as year %}
+	{% now "m" as month %}
+	{% now "d" as day %}
+	<a href="{% url 'booking:dashboard-prenotazioni' year month day 12 %}">Lista tavoli</a>
+
 	<br/>
 	<br/>
 
