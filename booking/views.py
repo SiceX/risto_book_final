@@ -39,6 +39,15 @@ class TavoloList(ListView):
 	template_name = 'booking/tavolo/list.html'
 
 
+class PrenotazioneList(LoginRequiredMixin, ListView):
+	model = Prenotazione
+	template_name = 'booking/prenotazione/list.html'
+
+	def get_queryset(self):
+		queryset = super().get_queryset()
+		return queryset.filter(utente=self.request.user)
+
+
 class PrenotazioneCreate(LoginRequiredMixin, CreateView):
 	model = Prenotazione
 	template_name = 'booking/prenotazione/create.html'

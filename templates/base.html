@@ -35,7 +35,8 @@
 					</li>
 					{% if user.is_authenticated %}
 						<li class="nav-item">
-							<a class="nav-link active" aria-current="page">Benvenuto, {{ user.username }}!</a>
+							<a href="{% url 'booking:prenotazione-list' %}" class="nav-link active"
+							   aria-current="page">Le mie prenotazioni</a>
 						</li>
 						<li class="nav-item">
 							<a href="{% url 'logout' %}" class="nav-link active" aria-current="page">Logout</a>

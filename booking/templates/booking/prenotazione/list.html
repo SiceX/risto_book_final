@@ -1,0 +1,27 @@
+{% extends 'base_list.html' %}
+
+{% block list_title %}Prenotazioni{% endblock %}
+
+{% block content_title %}Prenotazioni{% endblock %}
+
+{% block table_head %}
+	<th>Tavolo</th>
+	<th>Data e Ora</th>
+	<th>Posizione in Lista d'Attesa</th>
+	<th>Azioni</th>
+{% endblock %}
+
+{% block table_body %}
+	{% for prenotazione in object_list %}
+		<tr>
+			<td>{{ prenotazione.tavolo }}</td>
+			<td>{{ prenotazione.data_ora|date:"Y/m/d H" }}</td>
+			<td>{{ prenotazione.queue_place|add:"1" }}°</td>
+			<td>
+				<a href="" role="button" class="btn btn-danger">
+					Cancella Prenotazione
+				</a>
+			</td>
+		</tr>
+	{% endfor %}
+{% endblock %}

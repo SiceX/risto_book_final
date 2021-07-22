@@ -10,7 +10,8 @@ class Tavolo(models.Model):
 		verbose_name_plural = 'Tavoli'
 
 	def __str__(self):
-		return f'{self.nome} - {self.abilitato} - {self.pk}'
+		return f'{self.nome}'
+		# return f'{self.nome} - {self.abilitato} - {self.pk}'
 
 
 class Prenotazione(models.Model):
