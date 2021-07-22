@@ -31,3 +31,9 @@ class Prenotazione(models.Model):
 		on_delete=models.CASCADE
 	)
 	# utente
+
+	class Meta:
+		verbose_name_plural = 'Prenotazioni'
+
+	def __str__(self):
+		return f'{self.tavolo} - {self.data_ora} - {self.pk}'
