@@ -1,0 +1,40 @@
+<h3>{{ orario }}</h3>
+<div>
+	<table class="table">
+		<thead>
+		<tr>
+			<th>Nome</th>
+			<th>Abilitato/Disabilitato</th>
+			<th>Stato</th>
+			{% if user.is_authenticated %}
+				<th>Prenota</th>
+			{% endif %}
+		</tr>
+		</thead>
+		<tbody>
+		{% for tavolo in object_list %}
+			<tr>
+				<td>{{ tavolo.nome }}</td>
+				<td>{{ tavolo.stato }}</td>
+				{% if tavolo.nome in prenotati %}
+					<td>Prenotato</td>
+
+					{% if user.is_authenticated %}
+						<td>
+							<a role="button" class="btn btn-secondary disabled">Prenota Tavolo</a>
+						</td>
+					{% endif %}
+				{% else %}
+					<td>Libero</td>
+					{% if user.is_authenticated %}
+						<td>
+							<a role="button" class="btn btn-primary">Prenota Tavolo</a>
+						</td>
+					{% endif %}
+				{% endif %}
+
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+</div>

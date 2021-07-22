@@ -15,61 +15,9 @@
 
 	<div id="liste">
 
-		<h3>Pranzo</h3>
-		<div>
-			<table class="table">
-				<thead>
-				<tr>
-					<th>Nome</th>
-					<th>Abilitato/Disabilitato</th>
-					<th>Stato</th>
-				</tr>
-				</thead>
-				<tbody>
-				{% for tavolo in object_list %}
-					<tr>
-						<td>{{ tavolo.nome }}</td>
-						<td>{{ tavolo.stato }}</td>
-						<td>
-							{% if tavolo.nome in prenotati_pranzo %}
-								Prenotato
-							{% else %}
-								Libero
-							{% endif %}
-						</td>
-					</tr>
-				{% endfor %}
-				</tbody>
-			</table>
-		</div>
+		{% include './lista_tavoli.html' with orario='Pranzo' prenotati=prenotati_pranzo %}
 
-		<h3>Cena</h3>
-		<div style="display: none">
-			<table class="table">
-				<thead>
-				<tr>
-					<th>Nome</th>
-					<th>Abilitato/Disabilitato</th>
-					<th>Stato</th>
-				</tr>
-				</thead>
-				<tbody>
-				{% for tavolo in object_list %}
-					<tr>
-						<td>{{ tavolo.nome }}</td>
-						<td>{{ tavolo.stato }}</td>
-						<td>
-							{% if tavolo.nome in prenotati_cena %}
-								Prenotato
-							{% else %}
-								Libero
-							{% endif %}
-						</td>
-					</tr>
-				{% endfor %}
-				</tbody>
-			</table>
-		</div>
+		{% include './lista_tavoli.html' with orario='Cena' prenotati=prenotati_cena %}
 
 	</div>
 
