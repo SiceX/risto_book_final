@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
 
 {% block title %}Dashboard Prenotazioni{% endblock %}
 
 <h1>Dashboard Prenotazioni</h1>>
 
 {% block content %}
-	<form method="post">{% csrf_token %}
-		{{ form }}
-		<input type="submit" value="Visualizza">
-	</form>
+{#	<form method="post">{% csrf_token %}#}
+{#		{{ form|crispy }}#}
+{#		<input type="submit" value="Visualizza">#}
+{#	</form>#}
+	{% crispy form %}
 
 	<div id="liste">
 
@@ -81,6 +84,9 @@
 	$('#liste > h3').click(function(){
 		$(this).next().slideToggle();
 		return false;
+	});
+	$(document).ready(function() {
+		$('.date_nav').datepicker({ format: "yyyy/mm/dd" });
 	});
 	</script>
 {% endblock %}

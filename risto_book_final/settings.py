@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'booking.apps.BookingConfig',
-    'menu.apps.MenuConfig'
+    'menu.apps.MenuConfig',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -121,3 +122,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR/'static']
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

@@ -11,6 +11,7 @@ from django.views.generic import TemplateView, DetailView, ListView, CreateView
 from django.views.generic.edit import FormMixin
 from extra_views import ModelFormSetView
 
+from booking.forms import DateNavForm
 from booking.models import Tavolo, Prenotazione
 
 _logger = logging.getLogger(__name__)
@@ -31,10 +32,6 @@ class TavoloDetail(DetailView):
 class TavoloList(ListView):
 	model = Tavolo
 	template_name = 'booking/tavolo/list.html'
-
-
-class DateNavForm(forms.Form):
-	data = forms.DateField(widget=DateInput())
 
 
 class DashboardPrenotazioni(ListView, FormMixin):
