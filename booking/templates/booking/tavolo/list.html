@@ -6,7 +6,7 @@
 
 {% block table_head %}
 	<th>Nome</th>
-	<th>Stato</th>
+	<th>Abilitato</th>
 	<th>Dettaglio</th>
 {% endblock %}
 
@@ -14,7 +14,7 @@
 	{% for tavolo in object_list %}
 		<tr>
 			<td>{{ tavolo.nome }}</td>
-			<td>{{ tavolo.stato }}</td>
+			<td>{{ tavolo.abilitato }}</td>
 			<td><a href="{% url 'booking:tavolo-detail' tavolo.pk %}">Dettaglio</a> </td>
 		</tr>
 	{% endfor %}

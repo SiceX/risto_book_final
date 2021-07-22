@@ -22,7 +22,7 @@ _logger = logging.getLogger(__name__)
 class TavoloCreate(CreateView):
 	model = Tavolo
 	template_name = 'booking/tavolo/create.html'
-	fields = ['nome', 'stato']
+	fields = ['nome', 'abilitato']
 	success_url = reverse_lazy('booking:tavolo-list')
 
 

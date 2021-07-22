@@ -9,7 +9,7 @@
 		<tr>
 			<th>Nome</th>
 			<th>Abilitato/Disabilitato</th>
-			<th>Stato</th>
+			<th>Abilitato</th>
 			{% if user.is_authenticated %}
 				<th>Prenota</th>
 			{% endif %}
@@ -19,7 +19,7 @@
 		{% for tavolo in object_list %}
 			<tr>
 				<td>{{ tavolo.nome }}</td>
-				<td>{{ tavolo.stato }}</td>
+				<td>{{ tavolo.abilitato }}</td>
 				{% if tavolo.nome in prenotati %}
 					<td>Prenotato</td>
 
