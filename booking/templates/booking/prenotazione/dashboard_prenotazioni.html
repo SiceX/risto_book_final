@@ -4,6 +4,13 @@
 
 {% block content_title %}Dashboard Prenotazioni{% endblock %}
 
+{% block optional_content %}
+	<form method="post">{% csrf_token %}
+		{{ form }}
+		<input type="submit" value="Visualizza">
+	</form>
+{% endblock %}
+
 {% block table_head %}
 	<th>Nome</th>
 	<th>Abilitato/Disabilitato</th>
@@ -25,3 +32,11 @@
 		</tr>
 	{% endfor %}
 {% endblock %}
+
+{#{% block optional_script %}#}
+{#	<script>#}
+{#	$(document).ready(function() {#}
+{#		$('.datepicker').datepicker();#}
+{#	});#}
+{#	</script>#}
+{#{% endblock %}#}
