@@ -8,6 +8,6 @@ urlpatterns = [
 	path('tavoli/create', TavoloCreate.as_view(), name='tavolo-create'),
 	# path('tavoli/updateList', TavoloAbilitateList.as_view(), name='tavolo-create'),
 	path('tavoli/list', TavoloList.as_view(), name='tavolo-list'),
-	path('prenotazioni/dashboard/<int:year>/<int:month>/<int:day>/<int:hour>', DashboardPrenotazioni.as_view(),
+	path('prenotazioni/dashboard/<int:year>/<int:month>/<int:day>', DashboardPrenotazioni.as_view(),
 		name='dashboard-prenotazioni')
 ]

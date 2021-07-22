@@ -34,7 +34,7 @@ class TavoloList(ListView):
 
 
 class DateNavForm(forms.Form):
-	selected_date = forms.DateTimeField(widget=DateInput())
+	selected_date = forms.DateField(widget=DateInput())
 
 
 class DashboardPrenotazioni(ListView, FormMixin):
@@ -45,14 +45,12 @@ class DashboardPrenotazioni(ListView, FormMixin):
 	year = None
 	month = None
 	day = None
-	hour = None
 
 	def get_success_url(self):
 		return reverse_lazy('booking:dashboard-prenotazioni', kwargs={
 			'year': self.year,
 			'month': self.month,
-			'day': self.day,
-			'hour': self.hour
+			'day': self.day
 		})
 
 	def post(self, request, *args, **kwargs):
@@ -67,7 +65,6 @@ class DashboardPrenotazioni(ListView, FormMixin):
 		self.year = selected_date.year
 		self.month = selected_date.month
 		self.day = selected_date.day
-		self.hour = 12
 		return super().form_valid(form)
 
 	def get_context_data(self, **kwargs):
@@ -76,14 +73,20 @@ class DashboardPrenotazioni(ListView, FormMixin):
 		year = self.kwargs["year"]
 		month = self.kwargs["month"]
 		day = self.kwargs["day"]
-		hour = self.kwargs["hour"]
-		lookup_date = datetime.datetime(year, month, day, hour)
 
+		lookup_date = datetime.datetime(year, month, day, 12)
 		try:
-			tavoli_prenotati = Prenotazione.objects.filter(data_ora=lookup_date).values_list('tavolo_id', flat=True)
+			prenotati_pranzo = Prenotazione.objects.filter(data_ora=lookup_date).values_list('tavolo_id', flat=True)
 		except ObjectDoesNotExist:
-			tavoli_prenotati = []
+			prenotati_pranzo = []
 
-		ctx['tavoli_prenotati'] = tavoli_prenotati
+		lookup_date = datetime.datetime(year, month, day, 19)
+		try:
+			prenotati_cena = Prenotazione.objects.filter(data_ora=lookup_date).values_list('tavolo_id', flat=True)
+		except ObjectDoesNotExist:
+			prenotati_cena = []
+
+		ctx['prenotati_pranzo'] = prenotati_pranzo
+		ctx['prenotati_cena'] = prenotati_cena
 
 		return ctx

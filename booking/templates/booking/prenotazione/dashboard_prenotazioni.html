@@ -1,42 +1,86 @@
-{% extends 'base_list.html' %}
+{% extends 'base.html' %}
 
-{% block list_title %}Dashboard Prenotazioni{% endblock %}
+{% block title %}Dashboard Prenotazioni{% endblock %}
 
-{% block content_title %}Dashboard Prenotazioni{% endblock %}
+<h1>Dashboard Prenotazioni</h1>>
 
-{% block optional_content %}
+{% block content %}
 	<form method="post">{% csrf_token %}
 		{{ form }}
 		<input type="submit" value="Visualizza">
 	</form>
+
+	<div id="liste">
+
+		<h3>Pranzo</h3>
+		<div>
+			<table class="table">
+				<thead>
+				<tr>
+					<th>Nome</th>
+					<th>Abilitato/Disabilitato</th>
+					<th>Stato</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for tavolo in object_list %}
+					<tr>
+						<td>{{ tavolo.nome }}</td>
+						<td>{{ tavolo.stato }}</td>
+						<td>
+							{% if tavolo.nome in prenotati_pranzo %}
+								Prenotato
+							{% else %}
+								Libero
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+
+		<h3>Cena</h3>
+		<div style="display: none">
+			<table class="table">
+				<thead>
+				<tr>
+					<th>Nome</th>
+					<th>Abilitato/Disabilitato</th>
+					<th>Stato</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for tavolo in object_list %}
+					<tr>
+						<td>{{ tavolo.nome }}</td>
+						<td>{{ tavolo.stato }}</td>
+						<td>
+							{% if tavolo.nome in prenotati_cena %}
+								Prenotato
+							{% else %}
+								Libero
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+
 {% endblock %}
 
-{% block table_head %}
-	<th>Nome</th>
-	<th>Abilitato/Disabilitato</th>
-	<th>Stato</th>
-{% endblock %}
 
-{% block table_body %}
-	{% for tavolo in object_list %}
-		<tr>
-			<td>{{ tavolo.nome }}</td>
-			<td>{{ tavolo.stato }}</td>
-			<td>
-				{% if tavolo.nome in tavoli_prenotati %}
-					Prenotato
-				{% else %}
-					Libero
-				{% endif %}
-			</td>
-		</tr>
-	{% endfor %}
-{% endblock %}
 
-{#{% block optional_script %}#}
-{#	<script>#}
-{#	$(document).ready(function() {#}
-{#		$('.datepicker').datepicker();#}
-{#	});#}
-{#	</script>#}
-{#{% endblock %}#}
+{% block optional_script %}
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	<script type="text/javascript">
+	$('#liste > h3').click(function(){
+		$(this).next().slideToggle();
+		return false;
+	});
+	</script>
+{% endblock %}
