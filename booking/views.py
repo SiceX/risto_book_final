@@ -3,6 +3,7 @@ import logging
 from functools import partial
 
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import DateInput
 from django.shortcuts import render

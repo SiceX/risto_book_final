@@ -79,14 +79,13 @@
 
 
 {% block optional_script %}
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 	<script type="text/javascript">
 	$('#liste > h3').click(function(){
 		$(this).next().slideToggle();
 		return false;
 	});
 	$(document).ready(function() {
-		$('.date_nav').datepicker({ format: "yyyy/mm/dd" });
+		$('.dateinput').datepicker({ format: "yyyy/mm/dd" });
 	});
 	</script>
 {% endblock %}
