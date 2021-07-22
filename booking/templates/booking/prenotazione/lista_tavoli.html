@@ -1,5 +1,9 @@
-<h3>{{ orario }}</h3>
-<div>
+{#<h3>{{ orario }}</h3>#}
+<button class="btn btn-link " type="button" data-toggle="collapse" data-target="#lista_{{ orario|lower }}"
+		aria-expanded="false" aria-controls="lista_{{ orario|lower }}">
+	{{ orario}}
+</button>
+<div id="lista_{{ orario|lower }}" class="collapse {{ show }}">
 	<table class="table">
 		<thead>
 		<tr>
@@ -38,3 +42,10 @@
 		</tbody>
 	</table>
 </div>
+
+{#<script type="text/javascript">#}
+{#	$('#liste > h3').click(function(){#}
+{#		$(this).next().slideToggle();#}
+{#		return false;#}
+{#	});#}
+{#</script>#}

@@ -4,6 +4,10 @@
 
 {% block title %}Dashboard Prenotazioni{% endblock %}
 
+{% block head %}
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+{% endblock %}
+
 <h1>Dashboard Prenotazioni</h1>>
 
 {% block content %}
@@ -15,9 +19,13 @@
 
 	<div id="liste">
 
-		{% include './lista_tavoli.html' with orario='Pranzo' prenotati=prenotati_pranzo %}
-
-		{% include './lista_tavoli.html' with orario='Cena' prenotati=prenotati_cena %}
+		<div>
+		{% include './lista_tavoli.html' with orario='Pranzo' prenotati=prenotati_pranzo show='show' %}
+		</div>
+		<br/>
+		<div>
+		{% include './lista_tavoli.html' with orario='Cena' prenotati=prenotati_cena show='' %}
+		</div>
 
 	</div>
 
@@ -27,13 +35,15 @@
 
 
 {% block optional_script %}
+	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 	<script type="text/javascript">
-	$('#liste > h3').click(function(){
-		$(this).next().slideToggle();
-		return false;
-	});
 	$(document).ready(function() {
-		$('.dateinput').datepicker({ format: "yyyy/mm/dd" });
+		const input = $('#id_data');
+		input.datepicker({
+			format: "yyyy/mm/dd",
+			minDate: +1,
+			maxDate: "+1M"
+		});
 	});
 	</script>
 {% endblock %}

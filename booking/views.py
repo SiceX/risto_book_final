@@ -10,6 +10,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, ListView, CreateView
 from django.views.generic.edit import FormMixin
+from django.utils.timezone import make_aware
 from extra_views import ModelFormSetView
 
 from booking.forms import DateNavForm
@@ -65,6 +66,9 @@ class DashboardPrenotazioni(ListView, FormMixin):
 		self.day = selected_date.day
 		return super().form_valid(form)
 
+	def form_invalid(self, request, *args, **kwargs):
+		return self.get(self, request, *args, **kwargs)
+
 	def get_context_data(self, **kwargs):
 		ctx = super(DashboardPrenotazioni, self).get_context_data(**kwargs)
 
@@ -72,13 +76,13 @@ class DashboardPrenotazioni(ListView, FormMixin):
 		month = self.kwargs["month"]
 		day = self.kwargs["day"]
 
-		lookup_date = datetime.datetime(year, month, day, 12)
+		lookup_date = make_aware(datetime.datetime(year, month, day, 12))
 		try:
 			prenotati_pranzo = Prenotazione.objects.filter(data_ora=lookup_date).values_list('tavolo_id', flat=True)
 		except ObjectDoesNotExist:
 			prenotati_pranzo = []
 
-		lookup_date = datetime.datetime(year, month, day, 19)
+		lookup_date = make_aware(datetime.datetime(year, month, day, 19))
 		try:
 			prenotati_cena = Prenotazione.objects.filter(data_ora=lookup_date).values_list('tavolo_id', flat=True)
 		except ObjectDoesNotExist:
