@@ -24,6 +24,12 @@
 
 						{% if user.is_authenticated %}
 							<td>
+								{% for key, value in prenotati.items %}
+									{% if key == tavolo.nome %}
+										<label>Numero prenotazioni: {{ value }}</label>
+									{% endif %}
+								{% endfor %}
+								<br/>
 								{% if orario == 'Pranzo' %}
 									<a href="{% url 'booking:prenota-tavolo' tavolo.nome kwargs.year kwargs.month kwargs.day 12 %}"
 									   role="button" class="btn btn-info">Mettiti in coda</a>
@@ -33,6 +39,7 @@
 								{% endif %}
 							</td>
 						{% endif %}
+
 					{% else %}
 						<td>Libero</td>
 

@@ -1,5 +1,6 @@
 import datetime
 import logging
+from collections import Counter
 from functools import partial
 
 from django import forms
@@ -105,17 +106,21 @@ class DashboardPrenotazioni(ListView, FormMixin):
 		month = self.kwargs["month"]
 		day = self.kwargs["day"]
 
+		# Creo due dizionari con chiave ogni tavolo prenotato e valore il numero di prenotazioni per quel tavolo
+
 		lookup_date = make_aware(datetime.datetime(year, month, day, 12))
 		try:
 			prenotati_pranzo = Prenotazione.objects.filter(data_ora=lookup_date).values_list('tavolo_id', flat=True)
+			prenotati_pranzo = dict(Counter(prenotati_pranzo))
 		except ObjectDoesNotExist:
-			prenotati_pranzo = []
+			prenotati_pranzo = {}
 
 		lookup_date = make_aware(datetime.datetime(year, month, day, 19))
 		try:
 			prenotati_cena = Prenotazione.objects.filter(data_ora=lookup_date).values_list('tavolo_id', flat=True)
+			prenotati_cena = dict(Counter(prenotati_cena))
 		except ObjectDoesNotExist:
-			prenotati_cena = []
+			prenotati_cena = {}
 
 		ctx['prenotati_pranzo'] = prenotati_pranzo
 		ctx['prenotati_cena'] = prenotati_cena
