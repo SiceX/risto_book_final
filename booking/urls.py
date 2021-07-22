@@ -1,5 +1,5 @@
 from django.urls import path
-from booking.views import TavoloDetail, TavoloList, TavoloCreate, DashboardPrenotazioni
+from booking.views import TavoloDetail, TavoloList, TavoloCreate, DashboardPrenotazioni, PrenotazioneCreate
 
 app_name = 'booking'
 
@@ -9,5 +9,7 @@ urlpatterns = [
 	# path('tavoli/updateList', TavoloAbilitateList.as_view(), name='tavolo-create'),
 	path('tavoli/list', TavoloList.as_view(), name='tavolo-list'),
 	path('prenotazioni/dashboard/<int:year>/<int:month>/<int:day>', DashboardPrenotazioni.as_view(),
-		name='dashboard-prenotazioni')
+		name='dashboard-prenotazioni'),
+	path('prenotazioni/prenota/<str:tavolo>/<int:year>/<int:month>/<int:day>/<int:hour>',
+		 PrenotazioneCreate.as_view(), name='prenota-tavolo')
 ]

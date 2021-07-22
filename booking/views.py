@@ -4,6 +4,7 @@ from functools import partial
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import DateInput
 from django.shortcuts import render, get_object_or_404
@@ -13,7 +14,7 @@ from django.views.generic.edit import FormMixin
 from django.utils.timezone import make_aware
 from extra_views import ModelFormSetView
 
-from booking.forms import DateNavForm
+from booking.forms import DateNavForm, PrenotazioneForm
 from booking.models import Tavolo, Prenotazione
 
 _logger = logging.getLogger(__name__)
@@ -34,6 +35,21 @@ class TavoloDetail(DetailView):
 class TavoloList(ListView):
 	model = Tavolo
 	template_name = 'booking/tavolo/list.html'
+
+
+class PrenotazioneCreate(LoginRequiredMixin, CreateView):
+	model = Prenotazione
+	template_name = 'booking/prenotazione/create.html'
+	success_url = reverse_lazy('home')
+	form_class = PrenotazioneForm
+
+	def get_initial(self):
+		year = self.kwargs["year"]
+		month = self.kwargs["month"]
+		day = self.kwargs["day"]
+		hour = self.kwargs["hour"]
+		data_ora = make_aware(datetime.datetime(year, month, day, hour))
+		return {'tavolo': self.kwargs["tavolo"], 'data_ora': data_ora}
 
 
 class DashboardPrenotazioni(ListView, FormMixin):

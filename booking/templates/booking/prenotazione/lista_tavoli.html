@@ -1,7 +1,7 @@
 {#<h3>{{ orario }}</h3>#}
 <button class="btn btn-link " type="button" data-toggle="collapse" data-target="#lista_{{ orario|lower }}"
 		aria-expanded="false" aria-controls="lista_{{ orario|lower }}">
-	{{ orario}}
+	{{ orario }}
 </button>
 <div id="lista_{{ orario|lower }}" class="collapse {{ show }}">
 	<table class="table">
@@ -30,7 +30,13 @@
 					<td>Libero</td>
 					{% if user.is_authenticated %}
 						<td>
-							<a role="button" class="btn btn-primary">Prenota Tavolo</a>
+							{% if orario == 'Pranzo' %}
+								<a href="{% url 'booking:prenota-tavolo' tavolo.nome year month day 12 %}"
+								   role="button" class="btn btn-primary">Prenota Tavolo</a>
+							{% else %}
+								<a href="{% url 'booking:prenota-tavolo' tavolo.nome year month day 19 %}"
+								   role="button" class="btn btn-primary">Prenota Tavolo</a>
+							{% endif %}
 						</td>
 					{% endif %}
 				{% endif %}
