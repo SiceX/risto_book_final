@@ -14,9 +14,6 @@ class PrenotazioneForm(forms.ModelForm):
 	helper.form_method = 'POST'
 	helper.add_input(Submit('submit', 'Conferma'))
 	helper.inputs[0].field_classes = 'btn btn-success'
-	# helper.add_input(Button('cancel', 'Annulla', css_class='btn-danger',
-	# 							 onclick=f"window.location.href = "
-	# 									 f"'{reverse_lazy('/home')}';"))
 	helper.layout = Layout(
 		Field('tavolo', readonly="readonly"),
 		Field('data_ora', readonly="readonly")

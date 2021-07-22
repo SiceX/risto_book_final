@@ -5,7 +5,6 @@ from django.db import models
 class Tavolo(models.Model):
 	nome = models.CharField(max_length=5, primary_key=True)
 	abilitato = models.BooleanField(verbose_name='Abilitato', default=True, null=False)
-		# models.CharField(max_length=1, choices=STATO_TAVOLO_CHOICES, default='A')
 
 	class Meta:
 		verbose_name_plural = 'Tavoli'
@@ -24,9 +23,10 @@ class Prenotazione(models.Model):
 		settings.AUTH_USER_MODEL,
 		on_delete=models.CASCADE
 	)
+	queue_place = models.PositiveSmallIntegerField(null=False, default=0)
 
 	class Meta:
-		unique_together = ['data_ora', 'tavolo', 'utente']
+		unique_together = ['data_ora', 'tavolo', 'utente', 'queue_place']
 		verbose_name_plural = 'Prenotazioni'
 
 	def __str__(self):
