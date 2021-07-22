@@ -51,8 +51,9 @@ class PrenotazioneCreate(LoginRequiredMixin, CreateView):
 		day = self.kwargs["day"]
 		hour = self.kwargs["hour"]
 		data_ora = make_aware(datetime.datetime(year, month, day, hour))
-		queue_place = Prenotazione.objects.filter(tavolo=tavolo, data_ora=data_ora)
-		return {'tavolo': tavolo, 'data_ora': data_ora}
+		# Il posto nella coda di una nuova prenotazione equivale al numero di prenotazioni in coda attuali
+		queue_place = Prenotazione.objects.filter(tavolo=tavolo, data_ora=data_ora).count()
+		return {'tavolo': tavolo, 'data_ora': data_ora, 'queue_place': queue_place}
 
 	def form_valid(self, form):
 		self.object = form.save(commit=False)

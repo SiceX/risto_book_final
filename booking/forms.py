@@ -16,7 +16,8 @@ class PrenotazioneForm(forms.ModelForm):
 	helper.inputs[0].field_classes = 'btn btn-success'
 	helper.layout = Layout(
 		Field('tavolo', readonly="readonly"),
-		Field('data_ora', readonly="readonly")
+		Field('data_ora', readonly="readonly"),
+		Field('queue_place', readonly="readonly")
 	)
 
 	def __init__(self, *args, **kwargs):
@@ -25,7 +26,7 @@ class PrenotazioneForm(forms.ModelForm):
 
 	class Meta:
 		model = Prenotazione
-		fields = ['tavolo', 'data_ora']
+		fields = ['tavolo', 'data_ora', 'queue_place']
 
 
 class DateNavForm(forms.Form):
