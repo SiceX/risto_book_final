@@ -1,5 +1,5 @@
+from django.conf import settings
 from django.db import models
-
 
 STATO_TAVOLO_CHOICES = [
 	# ('L', 'Libero'),
@@ -30,7 +30,11 @@ class Prenotazione(models.Model):
 		'Tavolo',
 		on_delete=models.CASCADE
 	)
-	# utente
+	utente = models.ForeignKey(
+		settings.AUTH_USER_MODEL,
+		on_delete=models.CASCADE,
+		default='1'
+	)
 
 	class Meta:
 		verbose_name_plural = 'Prenotazioni'
