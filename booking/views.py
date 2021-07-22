@@ -6,7 +6,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import DateInput
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, ListView, CreateView
 from django.views.generic.edit import FormMixin
@@ -68,6 +68,9 @@ class DashboardPrenotazioni(ListView, FormMixin):
 
 	def form_invalid(self, request, *args, **kwargs):
 		return self.get(self, request, *args, **kwargs)
+
+	def get_queryset(self):
+		return Tavolo.objects.filter(abilitato=True)
 
 	def get_context_data(self, **kwargs):
 		ctx = super(DashboardPrenotazioni, self).get_context_data(**kwargs)

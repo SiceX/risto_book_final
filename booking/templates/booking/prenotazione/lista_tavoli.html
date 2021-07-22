@@ -8,8 +8,7 @@
 		<thead>
 		<tr>
 			<th>Nome</th>
-			<th>Abilitato/Disabilitato</th>
-			<th>Abilitato</th>
+			<th>Stato</th>
 			{% if user.is_authenticated %}
 				<th>Prenota</th>
 			{% endif %}
@@ -19,13 +18,12 @@
 		{% for tavolo in object_list %}
 			<tr>
 				<td>{{ tavolo.nome }}</td>
-				<td>{{ tavolo.abilitato }}</td>
 				{% if tavolo.nome in prenotati %}
 					<td>Prenotato</td>
 
 					{% if user.is_authenticated %}
 						<td>
-							<a role="button" class="btn btn-secondary disabled">Prenota Tavolo</a>
+							<a role="button" class="btn btn-info disabled">Mettiti in coda</a>
 						</td>
 					{% endif %}
 				{% else %}
