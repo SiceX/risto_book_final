@@ -7,6 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import DateInput
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, ListView, CreateView
@@ -50,6 +51,12 @@ class PrenotazioneCreate(LoginRequiredMixin, CreateView):
 		hour = self.kwargs["hour"]
 		data_ora = make_aware(datetime.datetime(year, month, day, hour))
 		return {'tavolo': self.kwargs["tavolo"], 'data_ora': data_ora}
+
+	def form_valid(self, form):
+		self.object = form.save(commit=False)
+		self.object.utente = self.request.user
+		self.object.save()
+		return HttpResponseRedirect(self.get_success_url())
 
 
 class DashboardPrenotazioni(ListView, FormMixin):

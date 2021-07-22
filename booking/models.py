@@ -22,11 +22,11 @@ class Prenotazione(models.Model):
 	)
 	utente = models.ForeignKey(
 		settings.AUTH_USER_MODEL,
-		on_delete=models.CASCADE,
-		default='1'
+		on_delete=models.CASCADE
 	)
 
 	class Meta:
+		unique_together = ['data_ora', 'tavolo', 'utente']
 		verbose_name_plural = 'Prenotazioni'
 
 	def __str__(self):
