@@ -13,6 +13,10 @@ class PrenotazioneForm(forms.ModelForm):
 	helper.form_method = 'POST'
 	helper.add_input(Submit('submit', 'Submit'))
 	helper.inputs[0].field_classes = 'btn btn-success'
+	helper.layout = Layout(
+		Field('tavolo', readonly="readonly"),
+		Field('data_ora', readonly="readonly")
+	)
 
 	class Meta:
 		model = Prenotazione
