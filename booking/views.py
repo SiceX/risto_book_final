@@ -34,7 +34,7 @@ class TavoloList(ListView):
 
 
 class DateNavForm(forms.Form):
-	selected_date = forms.DateField(widget=DateInput())
+	data = forms.DateField(widget=DateInput())
 
 
 class DashboardPrenotazioni(ListView, FormMixin):
@@ -61,7 +61,7 @@ class DashboardPrenotazioni(ListView, FormMixin):
 			return self.form_invalid(form)
 
 	def form_valid(self, form):
-		selected_date = form.cleaned_data["selected_date"]
+		selected_date = form.cleaned_data["data"]
 		self.year = selected_date.year
 		self.month = selected_date.month
 		self.day = selected_date.day
