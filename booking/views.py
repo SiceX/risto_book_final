@@ -45,12 +45,14 @@ class PrenotazioneCreate(LoginRequiredMixin, CreateView):
 	form_class = PrenotazioneForm
 
 	def get_initial(self):
+		tavolo = self.kwargs["tavolo"]
 		year = self.kwargs["year"]
 		month = self.kwargs["month"]
 		day = self.kwargs["day"]
 		hour = self.kwargs["hour"]
 		data_ora = make_aware(datetime.datetime(year, month, day, hour))
-		return {'tavolo': self.kwargs["tavolo"], 'data_ora': data_ora}
+		queue_place = Prenotazione.objects.filter(tavolo=tavolo, data_ora=data_ora)
+		return {'tavolo': tavolo, 'data_ora': data_ora}
 
 	def form_valid(self, form):
 		self.object = form.save(commit=False)

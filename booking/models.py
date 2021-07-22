@@ -26,7 +26,8 @@ class Prenotazione(models.Model):
 	queue_place = models.PositiveSmallIntegerField(null=False, default=0)
 
 	class Meta:
-		unique_together = ['data_ora', 'tavolo', 'utente', 'queue_place']
+		unique_together = [['data_ora', 'tavolo', 'utente', 'queue_place'],
+						   ['data_ora', 'tavolo', 'queue_place']]
 		verbose_name_plural = 'Prenotazioni'
 
 	def __str__(self):
