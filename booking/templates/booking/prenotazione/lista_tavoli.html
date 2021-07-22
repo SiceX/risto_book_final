@@ -31,7 +31,7 @@
 					{% if user.is_authenticated %}
 						<td>
 							{% if orario == 'Pranzo' %}
-								<a href="{% url 'booking:prenota-tavolo' tavolo.nome year month day 12 %}"
+								<a href="{% url 'booking:prenota-tavolo' tavolo.nome request.resolver_match.kwargs.year request.resolver_match.kwargs.month request.resolver_match.kwargs.day 12 %}"
 								   role="button" class="btn btn-primary">Prenota Tavolo</a>
 							{% else %}
 								<a href="{% url 'booking:prenota-tavolo' tavolo.nome year month day 19 %}"
