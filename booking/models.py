@@ -24,11 +24,12 @@ class Prenotazione(models.Model):
 		settings.AUTH_USER_MODEL,
 		on_delete=models.CASCADE
 	)
-	queue_place = models.PositiveSmallIntegerField(null=False, default=0)
+	queue_place = models.PositiveSmallIntegerField()
 
 	class Meta:
 		unique_together = [['data_ora', 'tavolo', 'utente', 'queue_place'],
-						   ['data_ora', 'tavolo', 'queue_place']]
+						   ['data_ora', 'tavolo', 'queue_place'],
+						   ['data_ora', 'utente']]
 		verbose_name_plural = 'Prenotazioni'
 
 	def __str__(self):
