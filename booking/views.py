@@ -83,8 +83,11 @@ class PrenotazioneCreate(LoginRequiredMixin, CreateView):
 		hour = self.kwargs["hour"]
 		data_ora = make_aware(datetime.datetime(year, month, day, hour))
 		# Il posto nella coda di una nuova prenotazione equivale al numero di prenotazioni in coda attuali
-		queue_place = Prenotazione.objects.filter(tavolo=tavolo, data_ora=data_ora).count()
-		return {'tavolo': tavolo, 'data_ora': data_ora, 'queue_place': queue_place}
+		queue_place = Prenotazione.objects.filter(data_ora=data_ora).count() + 1
+		if queue_place > 0:
+			return {'tavolo': tavolo, 'data_ora': data_ora, 'queue_place': queue_place}
+		else:
+			return {'tavolo': tavolo, 'data_ora': data_ora}
 
 	def form_valid(self, form):
 		self.object = form.save(commit=False)
@@ -132,6 +135,7 @@ class DashboardPrenotazioni(ListView, FormMixin):
 	def get_context_data(self, **kwargs):
 		ctx = super(DashboardPrenotazioni, self).get_context_data(**kwargs)
 
+		num_tavoli = Tavolo.objects.count()
 		year = self.kwargs["year"]
 		month = self.kwargs["month"]
 		day = self.kwargs["day"]
@@ -141,18 +145,22 @@ class DashboardPrenotazioni(ListView, FormMixin):
 		lookup_date = make_aware(datetime.datetime(year, month, day, 12))
 		try:
 			prenotati_pranzo = Prenotazione.objects.filter(data_ora=lookup_date).values_list('tavolo_id', flat=True)
-			prenotati_pranzo = dict(Counter(prenotati_pranzo))
+			in_coda_pranzo = Prenotazione.objects.filter(data_ora=lookup_date, tavolo=None).count()
 		except ObjectDoesNotExist:
 			prenotati_pranzo = {}
+			in_coda_pranzo = 0
 
 		lookup_date = make_aware(datetime.datetime(year, month, day, 19))
 		try:
 			prenotati_cena = Prenotazione.objects.filter(data_ora=lookup_date).values_list('tavolo_id', flat=True)
-			prenotati_cena = dict(Counter(prenotati_cena))
+			in_coda_cena = Prenotazione.objects.filter(data_ora=lookup_date, tavolo=None).count()
 		except ObjectDoesNotExist:
 			prenotati_cena = {}
+			in_coda_cena = 0
 
 		ctx['prenotati_pranzo'] = prenotati_pranzo
 		ctx['prenotati_cena'] = prenotati_cena
+		ctx['in_coda_pranzo'] = in_coda_pranzo
+		ctx['in_coda_cena'] = in_coda_cena
 
 		return ctx

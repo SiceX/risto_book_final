@@ -4,6 +4,17 @@
 	{{ orario }}
 </button>
 <div id="lista_{{ orario|lower }}" class="collapse {{ show }}">
+	{% if in_coda > 0 %}
+		<p>{{ in_coda }} persone in lista d'attesa per questo orario. Puoi metterti in coda e verrai notificato
+			se un tavolo si sarà liberato.</p>
+		{% if orario == 'Pranzo' %}
+			<a href="{% url 'booking:prenota-tavolo' tavolo.nome kwargs.year kwargs.month kwargs.day 12 %}"
+			   role="button" class="btn btn-info">Mettiti in coda</a>
+		{% else %}
+			<a href="{% url 'booking:prenota-tavolo' tavolo.nome kwargs.year kwargs.month kwargs.day 19 %}"
+			   role="button" class="btn btn-info">Mettiti in coda</a>
+		{% endif %}
+	{% endif %}
 	<table class="table">
 		<thead>
 		<tr>
@@ -24,19 +35,20 @@
 
 						{% if user.is_authenticated %}
 							<td>
-								{% for key, value in prenotati.items %}
-									{% if key == tavolo.nome %}
-										<label>Numero prenotazioni: {{ value }}</label>
-									{% endif %}
-								{% endfor %}
-								<br/>
-								{% if orario == 'Pranzo' %}
-									<a href="{% url 'booking:prenota-tavolo' tavolo.nome kwargs.year kwargs.month kwargs.day 12 %}"
-									   role="button" class="btn btn-info">Mettiti in coda</a>
-								{% else %}
-									<a href="{% url 'booking:prenota-tavolo' tavolo.nome kwargs.year kwargs.month kwargs.day 19 %}"
-									   role="button" class="btn btn-info">Mettiti in coda</a>
-								{% endif %}
+{#								{% for key, value in prenotati.items %}#}
+{#									{% if key == tavolo.nome %}#}
+{#										<label>Numero prenotazioni: {{ value }}</label>#}
+{#									{% endif %}#}
+{#								{% endfor %}#}
+{#								<br/>#}
+								<a href="" role="button" class="btn btn-info disabled">Prenota Tavolo</a>
+{#								{% if orario == 'Pranzo' %}#}
+{#									<a href="{% url 'booking:prenota-tavolo' tavolo.nome kwargs.year kwargs.month kwargs.day 12 %}"#}
+{#									   role="button" class="btn btn-info">Mettiti in coda</a>#}
+{#								{% else %}#}
+{#									<a href="{% url 'booking:prenota-tavolo' tavolo.nome kwargs.year kwargs.month kwargs.day 19 %}"#}
+{#									   role="button" class="btn btn-info">Mettiti in coda</a>#}
+{#								{% endif %}#}
 							</td>
 						{% endif %}
 
