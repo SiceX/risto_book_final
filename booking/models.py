@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.validators import MinValueValidator
 from django.db import models
 
 
@@ -24,7 +25,9 @@ class Prenotazione(models.Model):
 		settings.AUTH_USER_MODEL,
 		on_delete=models.CASCADE
 	)
-	queue_place = models.PositiveSmallIntegerField()
+	queue_place = models.PositiveSmallIntegerField(
+		validators=[MinValueValidator(1)]
+	)
 
 	class Meta:
 		unique_together = [['data_ora', 'tavolo', 'utente', 'queue_place'],
