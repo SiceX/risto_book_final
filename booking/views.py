@@ -7,12 +7,13 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import F
 from django.forms import DateInput
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, ListView, CreateView
-from django.views.generic.edit import FormMixin
+from django.views.generic.edit import FormMixin, DeleteView
 from django.utils.timezone import make_aware
 from extra_views import ModelFormSetView
 
@@ -46,6 +47,26 @@ class PrenotazioneList(LoginRequiredMixin, ListView):
 	def get_queryset(self):
 		queryset = super().get_queryset()
 		return queryset.filter(utente=self.request.user)
+
+
+class PrenotazioneDelete(LoginRequiredMixin, DeleteView):
+	model = Prenotazione
+	template_name = 'booking/prenotazione/delete.html'
+	success_url = reverse_lazy('booking:prenotazione-list')
+
+	def delete(self, *args, **kwargs):
+		self.object = self.get_object()
+		success_url = self.get_success_url()
+		prenotazioni_in_coda = Prenotazione.objects\
+			.filter(data_ora=self.object.data_ora, tavolo=self.object.tavolo)\
+			.exclude(utente=self.object.utente)
+		self.object.delete()
+
+		# Dopo aver eliminato la prenotazione, decremento i segna-posto della lista d'attesa, se ce ne sono
+		if prenotazioni_in_coda is not None:
+			prenotazioni_in_coda.update(queue_place=F('queue_place')-1)
+
+		return HttpResponseRedirect(success_url)
 
 
 class PrenotazioneCreate(LoginRequiredMixin, CreateView):

@@ -15,10 +15,10 @@
 	{% for prenotazione in object_list %}
 		<tr>
 			<td>{{ prenotazione.tavolo }}</td>
-			<td>{{ prenotazione.data_ora|date:"Y/m/d H" }}</td>
+			<td>{{ prenotazione.data_ora|date:"Y/m/d H:i" }}</td>
 			<td>{{ prenotazione.queue_place|add:"1" }}°</td>
 			<td>
-				<a href="" role="button" class="btn btn-danger">
+				<a href="{% url 'booking:prenotazione-delete' prenotazione.pk %}" role="button" class="btn btn-danger">
 					Cancella Prenotazione
 				</a>
 			</td>

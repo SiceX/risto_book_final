@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}Cancella Prenotazione{% endblock %}
+
+{% block content %}
+    <h1>Cancella Prenotazione</h1>
+    <h2>Stai per cancellare questa prenotazione, sei sicuro?</h2>
+    <p>Tavolo {{ object.tavolo }}</p>
+    <p>Date e Ora di prenotazione: {{ object.data_ora|date:"Y/m/d H:i" }}</p>
+    <p>Posizione in Lista d'Attesa: {{ object.queue_place|add:"1" }}</p>
+    <form method="post">{% csrf_token %}
+        {{ form|crispy }}
+        <a href="{% url 'booking:prenotazione-list' %}" role="button" class="btn btn-warning">Annulla</a>
+        <input role="button" class="btn btn-danger" type="submit" value="Conferma">
+    </form>
+{% endblock %}
