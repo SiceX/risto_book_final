@@ -14,7 +14,11 @@
 {% block table_body %}
 	{% for prenotazione in object_list %}
 		<tr>
-			<td>{{ prenotazione.tavolo }}</td>
+			{% if prenotazione.tavolo != None %}
+				<td>{{ prenotazione.tavolo }}</td>
+			{% else %}
+				<td>Non ancora assegnato</td>
+			{% endif %}
 			<td>{{ prenotazione.data_ora|date:"Y/m/d H:i" }}</td>
 			{% if prenotazione.queue_place >= 0 %}
 				<td>{{ prenotazione.queue_place|add:"1" }}°</td>
