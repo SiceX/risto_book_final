@@ -1,24 +1,19 @@
 {#<h3>{{ orario }}</h3>#}
-<button class="btn btn-link " type="button" data-toggle="collapse" data-target="#lista_{{ orario|lower }}"
-		aria-expanded="false" aria-controls="lista_{{ orario|lower }}">
-	{{ orario }}
+<button class="btn btn-link " type="button" data-toggle="collapse" data-target="#lista_{{ fascia|lower }}"
+		aria-expanded="false" aria-controls="lista_{{ fascia|lower }}">
+	{{ fascia }}
 </button>
 
 {% with request.resolver_match.kwargs as kwargs%}
 
-	<div id="lista_{{ orario|lower }}" class="collapse {{ show }}">
+	<div id="lista_{{ fascia|lower }}" class="collapse {{ show }}">
 		{% if in_coda >= 0 %}
 			<p>Tutti i tavoli sono prenotati per questo orario, se sei registrato puoi metterti in coda e verrai notificato
 				se un tavolo si sarà liberato. <br/>
 				Al momento ci sono {{ in_coda }} persone in lista d'attesa. </p>
 			{% if user.is_authenticated and not already_booked %}
-				{% if orario == 'Pranzo' %}
-					<a href="{% url 'booking:prenota-tavolo-in-coda' kwargs.year kwargs.month kwargs.day 12 %}"
-					   role="button" class="btn btn-info">Mettiti in coda</a>
-				{% else %}
-					<a href="{% url 'booking:prenota-tavolo-in-coda' kwargs.year kwargs.month kwargs.day 19 %}"
-					   role="button" class="btn btn-info">Mettiti in coda</a>
-				{% endif %}
+				<a href="{% url 'booking:prenota-tavolo-in-coda' kwargs.year kwargs.month kwargs.day orario %}"
+				   role="button" class="btn btn-info">Mettiti in coda</a>
 			{% elif user.is_authenticated and already_booked %}
 				<p>Hai già fatto una prenotazione per questa fascia oraria, non puoi farne altre.</p>
 			{% endif %}
@@ -51,13 +46,8 @@
 
 						{% if user.is_authenticated and not already_booked %}
 							<td>
-								{% if orario == 'Pranzo' %}
-									<a href="{% url 'booking:prenota-tavolo' tavolo.nome kwargs.year kwargs.month kwargs.day 12 %}"
-									   role="button" class="btn btn-primary">Prenota Tavolo</a>
-								{% else %}
-									<a href="{% url 'booking:prenota-tavolo' tavolo.nome kwargs.year kwargs.month kwargs.day 19 %}"
-									   role="button" class="btn btn-primary">Prenota Tavolo</a>
-								{% endif %}
+								<a href="{% url 'booking:prenota-tavolo' tavolo.nome kwargs.year kwargs.month kwargs.day orario %}"
+								   role="button" class="btn btn-primary">Prenota Tavolo</a>
 							</td>
 						{% elif user.is_authenticated and already_booked%}
 							<td>

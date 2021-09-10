@@ -20,11 +20,11 @@
 	<div id="liste">
 
 		<div>
-		{% include './lista_tavoli.html' with orario='Pranzo' prenotati=prenotati_pranzo in_coda=in_coda_pranzo already_booked=has_already_booked_pranzo show='show' %}
+		{% include './lista_tavoli.html' with fascia='Pranzo' orario='12' prenotati=prenotati_pranzo in_coda=in_coda_pranzo already_booked=has_already_booked_pranzo show='show' %}
 		</div>
 		<br/>
 		<div>
-		{% include './lista_tavoli.html' with orario='Cena' prenotati=prenotati_cena in_coda=in_coda_cena already_booked=has_already_booked_cena show='' %}
+		{% include './lista_tavoli.html' with fascia='Cena' orario='19' prenotati=prenotati_cena in_coda=in_coda_cena already_booked=has_already_booked_cena show='' %}
 		</div>
 
 	</div>
