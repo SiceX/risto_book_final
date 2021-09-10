@@ -6,9 +6,15 @@
 {% block content %}
     <h1>Cancella Prenotazione</h1>
     <h2>Stai per cancellare questa prenotazione, sei sicuro?</h2>
-    <p>Tavolo {{ object.tavolo }}</p>
-    <p>Date e Ora di prenotazione: {{ object.data_ora|date:"Y/m/d H:i" }}</p>
-    <p>Posizione in Lista d'Attesa: {{ object.queue_place }}</p>
+	{% if object.tavolo != None %}
+		<p>Tavolo {{ object.tavolo }}</p>
+	{% else %}
+		<p>Tavolo non ancora assegnato</p>
+	{% endif %}
+    <p>Data e Ora di prenotazione: {{ object.data_ora|date:"Y/m/d H:i" }}</p>
+	{% if object.queue_place >= 0 %}
+		<p>Posizione in Lista d'Attesa: {{ object.queue_place }}°</p>
+	{% endif %}
     <form method="post">{% csrf_token %}
         {{ form|crispy }}
         <a href="{% url 'booking:prenotazione-list' %}" role="button" class="btn btn-warning">Annulla</a>
