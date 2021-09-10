@@ -19,7 +19,8 @@ class Prenotazione(models.Model):
 	data_ora = models.DateTimeField()
 	tavolo = models.ForeignKey(
 		'Tavolo',
-		on_delete=models.CASCADE
+		on_delete=models.CASCADE,
+		null=True
 	)
 	utente = models.ForeignKey(
 		settings.AUTH_USER_MODEL,
@@ -30,9 +31,8 @@ class Prenotazione(models.Model):
 	)
 
 	class Meta:
-		unique_together = [['data_ora', 'tavolo', 'utente', 'queue_place'],
-						   ['data_ora', 'tavolo', 'queue_place'],
-						   ['data_ora', 'utente']]
+		unique_together = [['data_ora', 'tavolo', 'utente'],
+						   ['data_ora', 'utente', 'queue_place']]
 		verbose_name_plural = 'Prenotazioni'
 
 	def __str__(self):

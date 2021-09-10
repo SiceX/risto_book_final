@@ -23,6 +23,8 @@ class PrenotazioneForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		super(PrenotazioneForm, self).__init__(*args, **kwargs)
 		self.fields['tavolo'].disabled = True
+		self.fields['tavolo'].required = False
+		self.fields['queue_place'].required = False
 
 	class Meta:
 		model = Prenotazione
