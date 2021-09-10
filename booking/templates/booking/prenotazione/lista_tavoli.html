@@ -7,16 +7,20 @@
 {% with request.resolver_match.kwargs as kwargs%}
 
 	<div id="lista_{{ orario|lower }}" class="collapse {{ show }}">
-		{% if in_coda >= 0 and user.is_authenticated %}
-			<p>Tutti i tavoli sono prenotati per questo orario, puoi metterti in coda e verrai notificato
+		{% if in_coda >= 0 %}
+			<p>Tutti i tavoli sono prenotati per questo orario, se sei registrato puoi metterti in coda e verrai notificato
 				se un tavolo si sarà liberato. <br/>
 				Al momento ci sono {{ in_coda }} persone in lista d'attesa. </p>
-			{% if orario == 'Pranzo' %}
-				<a href="{% url 'booking:prenota-tavolo-in-coda' kwargs.year kwargs.month kwargs.day 12 %}"
-				   role="button" class="btn btn-info">Mettiti in coda</a>
-			{% else %}
-				<a href="{% url 'booking:prenota-tavolo-in-coda' kwargs.year kwargs.month kwargs.day 19 %}"
-				   role="button" class="btn btn-info">Mettiti in coda</a>
+			{% if user.is_authenticated and not already_booked %}
+				{% if orario == 'Pranzo' %}
+					<a href="{% url 'booking:prenota-tavolo-in-coda' kwargs.year kwargs.month kwargs.day 12 %}"
+					   role="button" class="btn btn-info">Mettiti in coda</a>
+				{% else %}
+					<a href="{% url 'booking:prenota-tavolo-in-coda' kwargs.year kwargs.month kwargs.day 19 %}"
+					   role="button" class="btn btn-info">Mettiti in coda</a>
+				{% endif %}
+			{% elif user.is_authenticated and already_booked %}
+				<p>Hai già fatto una prenotazione per questa fascia oraria, non puoi farne altre.</p>
 			{% endif %}
 		{% endif %}
 		<table class="table">
@@ -38,27 +42,14 @@
 
 						{% if user.is_authenticated %}
 							<td>
-								{#								{% for key, value in prenotati.items %}#}
-								{#									{% if key == tavolo.nome %}#}
-								{#										<label>Numero prenotazioni: {{ value }}</label>#}
-								{#									{% endif %}#}
-								{#								{% endfor %}#}
-								{#								<br/>#}
 								<a href="" role="button" class="btn btn-info disabled">Prenota Tavolo</a>
-								{#								{% if orario == 'Pranzo' %}#}
-								{#									<a href="{% url 'booking:prenota-tavolo' tavolo.nome kwargs.year kwargs.month kwargs.day 12 %}"#}
-								{#									   role="button" class="btn btn-info">Mettiti in coda</a>#}
-								{#								{% else %}#}
-								{#									<a href="{% url 'booking:prenota-tavolo' tavolo.nome kwargs.year kwargs.month kwargs.day 19 %}"#}
-								{#									   role="button" class="btn btn-info">Mettiti in coda</a>#}
-								{#								{% endif %}#}
 							</td>
 						{% endif %}
 
 					{% else %}
 						<td>Libero</td>
 
-						{% if user.is_authenticated %}
+						{% if user.is_authenticated and not already_booked %}
 							<td>
 								{% if orario == 'Pranzo' %}
 									<a href="{% url 'booking:prenota-tavolo' tavolo.nome kwargs.year kwargs.month kwargs.day 12 %}"
@@ -68,7 +59,10 @@
 									   role="button" class="btn btn-primary">Prenota Tavolo</a>
 								{% endif %}
 							</td>
-
+						{% elif user.is_authenticated and already_booked%}
+							<td>
+								<a href="" role="button" class="btn btn-info disabled">Prenota Tavolo</a>
+							</td>
 						{% endif %}
 					{% endif %}
 

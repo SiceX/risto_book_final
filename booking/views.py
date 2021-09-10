@@ -144,25 +144,31 @@ class DashboardPrenotazioni(ListView, FormMixin):
 		year = self.kwargs["year"]
 		month = self.kwargs["month"]
 		day = self.kwargs["day"]
+		user_id = self.request.user.id
 
 		# Creo due liste con gli id dei tavoli prenotati, uno per pranzo e uno per cena.
 		# Mi segno anche due contatori delle eventuali persone in coda, uno a pranzo ed uno a cena
 
 		lookup_date = make_aware(datetime.datetime(year, month, day, 12))
-		ctx['prenotati_pranzo'], ctx['in_coda_pranzo'] = self.get_bookings_data(lookup_date)
+		ctx['prenotati_pranzo'], ctx['in_coda_pranzo'], ctx['has_already_booked_pranzo'] = \
+			self.get_bookings_data(lookup_date, user_id)
 
 		lookup_date = make_aware(datetime.datetime(year, month, day, 19))
-		ctx['prenotati_cena'],	ctx['in_coda_cena'] = self.get_bookings_data(lookup_date)
+		ctx['prenotati_cena'],	ctx['in_coda_cena'], ctx['has_already_booked_cena'] = \
+			self.get_bookings_data(lookup_date, user_id)
 
 		return ctx
 
 	@staticmethod
-	def get_bookings_data(lookup_date_hour) -> Tuple[list, int]:
+	def get_bookings_data(lookup_date_hour, user_id=None) -> Tuple[list, int, bool]:
 		"""
 		Ritorna la lista di tavoli prenotati e numero di prenotazioni totali per quella data-ora
 		@param lookup_date_hour: datetime.datetime della data e ora da andare a guardare
-		@return: lista di tavoli prenotati e numero di persone in coda per l'orario.
-		Il numero può essere negativo se ci sono ancora tavoli liberi.
+		@param user_id: opzionale, per controllare se l'utente ha già una prenotazione nel dato orario.
+		@return: Tupla con:
+		-lista di tavoli prenotati;
+		-numero di persone in coda, può essere negativo se ci sono ancora tavoli liberi;
+		-booleano, vero se l'utente ha già prenotazione per il dato orario, None se user_id non specificato.
 		"""
 		try:
 			prenotati = Prenotazione.objects.filter(data_ora=lookup_date_hour).values_list('tavolo_id', flat=True)
@@ -170,7 +176,11 @@ class DashboardPrenotazioni(ListView, FormMixin):
 			prenotati = {}
 		in_coda = get_available_queue_place(lookup_date_hour)
 
-		return prenotati, in_coda
+		has_already_booked = None
+		if user_id is not None:
+			has_already_booked = Prenotazione.objects.filter(data_ora=lookup_date_hour, utente=user_id).exists()
+
+		return prenotati, in_coda, has_already_booked
 
 
 def get_available_queue_place(lookup_date_hour) -> int:
