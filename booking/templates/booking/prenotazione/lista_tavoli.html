@@ -7,7 +7,7 @@
 {% with request.resolver_match.kwargs as kwargs%}
 
 	<div id="lista_{{ orario|lower }}" class="collapse {{ show }}">
-		{% if in_coda >= 0 %}
+		{% if in_coda >= 0 and user.is_authenticated %}
 			<p>Tutti i tavoli sono prenotati per questo orario, puoi metterti in coda e verrai notificato
 				se un tavolo si sarà liberato. <br/>
 				Al momento ci sono {{ in_coda }} persone in lista d'attesa. </p>

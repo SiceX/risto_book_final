@@ -90,7 +90,7 @@ class PrenotazioneCreate(LoginRequiredMixin, CreateView):
 		# Il posto nella coda di una nuova prenotazione equivale al numero di prenotazioni in coda attuali
 		queue_place = get_available_queue_place(data_ora)
 		if queue_place >= 0:
-			return {'tavolo': tavolo, 'data_ora': data_ora, 'queue_place': queue_place}
+			return {'data_ora': data_ora, 'queue_place': queue_place}
 		else:
 			return {'tavolo': tavolo, 'data_ora': data_ora}
 

@@ -21,7 +21,7 @@
 			{% endif %}
 			<td>{{ prenotazione.data_ora|date:"Y/m/d H:i" }}</td>
 			{% if prenotazione.queue_place >= 0 %}
-				<td>{{ prenotazione.queue_place|add:"1" }}°</td>
+				<td>{{ prenotazione.queue_place }}°</td>
 			{% else %}
 				<td>Tavolo prenotato</td>
 			{% endif %}

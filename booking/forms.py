@@ -1,6 +1,6 @@
 from crispy_forms.layout import Submit, Layout, Field, Button
 from django import forms
-from django.forms import DateInput, TextInput
+from django.forms import DateInput, TextInput, HiddenInput
 from crispy_forms.helper import FormHelper
 from django.urls import reverse_lazy
 
@@ -25,6 +25,11 @@ class PrenotazioneForm(forms.ModelForm):
 		self.fields['tavolo'].disabled = True
 		self.fields['tavolo'].required = False
 		self.fields['queue_place'].required = False
+
+		if 'tavolo' not in self.initial:
+			self.fields['tavolo'].widget = HiddenInput()
+		if 'queue_place' not in self.initial:
+			self.fields['queue_place'].widget = HiddenInput()
 
 	class Meta:
 		model = Prenotazione

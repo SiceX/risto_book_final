@@ -5,6 +5,13 @@
 
 
 {% block content %}
-	<h2>Prenota Tavolo</h2>
+
+	{% with request.resolver_match.kwargs as kwargs%}
+		{% if not kwargs.tavolo %}
+			<h2>Mettiti in coda</h2>
+		{% else %}
+			<h2>Prenota Tavolo</h2>
+		{% endif %}
+	{% endwith %}
 	{% crispy form %}
 {% endblock %}
