@@ -22,6 +22,7 @@ from risto_book_final.views import maintenance, Home, UserCreationView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('maintenance', maintenance, name='maintenance'),
+    path('', Home.as_view(), name='home'),
     path('homepage', Home.as_view(), name='home'),
     path('register/', UserCreationView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
