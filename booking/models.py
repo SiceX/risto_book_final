@@ -27,7 +27,8 @@ class Prenotazione(models.Model):
 		on_delete=models.CASCADE
 	)
 	queue_place = models.PositiveSmallIntegerField(
-		validators=[MinValueValidator(1)]
+		validators=[MinValueValidator(1)],
+		null=True
 	)
 
 	class Meta:
