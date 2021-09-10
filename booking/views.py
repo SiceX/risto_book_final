@@ -58,14 +58,19 @@ class PrenotazioneDelete(LoginRequiredMixin, DeleteView):
 	def delete(self, *args, **kwargs):
 		self.object = self.get_object()
 		success_url = self.get_success_url()
-		prenotazioni_in_coda = Prenotazione.objects\
-			.filter(data_ora=self.object.data_ora, tavolo=self.object.tavolo)\
-			.exclude(utente=self.object.utente)
+		prenotazioni_in_coda = Prenotazione.objects.filter(data_ora=self.object.data_ora,
+														   queue_place__isnull=False).order_by('queue_place')
+		tavolo_liberato_id = self.object.tavolo_id
+		queue_place_liberato = self.object.queue_place
 		self.object.delete()
 
-		# Dopo aver eliminato la prenotazione, decremento i segna-posto della lista d'attesa, se ce ne sono
+		# Dopo aver eliminato la prenotazione, decremento i segna-posto della lista d'attesa e assegno il tavolo al primo
 		if prenotazioni_in_coda is not None:
-			prenotazioni_in_coda.update(queue_place=F('queue_place')-1)
+			if tavolo_liberato_id is not None:
+				prenotazioni_in_coda.filter(queue_place=0).update(tavolo_id=tavolo_liberato_id, queue_place=None)
+				prenotazioni_in_coda.filter(queue_place__gt=0).update(queue_place=F('queue_place')-1)
+			elif queue_place_liberato is not None:
+				prenotazioni_in_coda.filter(queue_place__gt=queue_place_liberato).update(queue_place=F('queue_place') - 1)
 
 		return HttpResponseRedirect(success_url)
 
