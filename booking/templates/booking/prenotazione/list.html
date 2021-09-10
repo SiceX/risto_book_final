@@ -16,7 +16,11 @@
 		<tr>
 			<td>{{ prenotazione.tavolo }}</td>
 			<td>{{ prenotazione.data_ora|date:"Y/m/d H:i" }}</td>
-			<td>{{ prenotazione.queue_place|add:"1" }}°</td>
+			{% if prenotazione.queue_place >= 0 %}
+				<td>{{ prenotazione.queue_place|add:"1" }}°</td>
+			{% else %}
+				<td>Tavolo prenotato</td>
+			{% endif %}
 			<td>
 				<a href="{% url 'booking:prenotazione-delete' prenotazione.pk %}" role="button" class="btn btn-danger">
 					Cancella Prenotazione
