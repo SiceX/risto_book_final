@@ -16,6 +16,7 @@ from django.views.generic import TemplateView, DetailView, ListView, CreateView
 from django.views.generic.edit import FormMixin, DeleteView
 from django.utils.timezone import make_aware
 from extra_views import ModelFormSetView
+from typing import Tuple
 
 from booking.forms import DateNavForm, PrenotazioneForm
 from booking.models import Tavolo, Prenotazione
@@ -76,16 +77,20 @@ class PrenotazioneCreate(LoginRequiredMixin, CreateView):
 	form_class = PrenotazioneForm
 
 	def get_initial(self):
-		tavolo = self.kwargs["tavolo"]
+		# Se tavolo non è stato impostato, vuol dire che è una prenotazione per mettersi in coda
+		if "tavolo" in self.kwargs:
+			tavolo = self.kwargs["tavolo"]
+		else:
+			tavolo = None
 		year = self.kwargs["year"]
 		month = self.kwargs["month"]
 		day = self.kwargs["day"]
 		hour = self.kwargs["hour"]
 		data_ora = make_aware(datetime.datetime(year, month, day, hour))
 		# Il posto nella coda di una nuova prenotazione equivale al numero di prenotazioni in coda attuali
-		queue_place = Prenotazione.objects.filter(data_ora=data_ora).count() + 1
-		if queue_place > 0:
-			return {'tavolo': tavolo, 'data_ora': data_ora, 'queue_place': queue_place}
+		queue_place = get_available_queue_place(data_ora)
+		if queue_place >= 0:
+			return {'tavolo': tavolo, 'data_ora': data_ora, 'queue_place': queue_place+1}
 		else:
 			return {'tavolo': tavolo, 'data_ora': data_ora}
 
@@ -140,27 +145,41 @@ class DashboardPrenotazioni(ListView, FormMixin):
 		month = self.kwargs["month"]
 		day = self.kwargs["day"]
 
-		# Creo due dizionari con chiave ogni tavolo prenotato e valore il numero di prenotazioni per quel tavolo
+		# Creo due liste con gli id dei tavoli prenotati, uno per pranzo e uno per cena.
+		# Mi segno anche due contatori delle eventuali persone in coda, uno a pranzo ed uno a cena
 
 		lookup_date = make_aware(datetime.datetime(year, month, day, 12))
-		try:
-			prenotati_pranzo = Prenotazione.objects.filter(data_ora=lookup_date).values_list('tavolo_id', flat=True)
-			in_coda_pranzo = Prenotazione.objects.filter(data_ora=lookup_date, tavolo=None).count()
-		except ObjectDoesNotExist:
-			prenotati_pranzo = {}
-			in_coda_pranzo = 0
+		ctx['prenotati_pranzo'], ctx['in_coda_pranzo'] = self.get_bookings_data(lookup_date)
 
 		lookup_date = make_aware(datetime.datetime(year, month, day, 19))
-		try:
-			prenotati_cena = Prenotazione.objects.filter(data_ora=lookup_date).values_list('tavolo_id', flat=True)
-			in_coda_cena = Prenotazione.objects.filter(data_ora=lookup_date, tavolo=None).count()
-		except ObjectDoesNotExist:
-			prenotati_cena = {}
-			in_coda_cena = 0
-
-		ctx['prenotati_pranzo'] = prenotati_pranzo
-		ctx['prenotati_cena'] = prenotati_cena
-		ctx['in_coda_pranzo'] = in_coda_pranzo
-		ctx['in_coda_cena'] = in_coda_cena
+		ctx['prenotati_cena'],	ctx['in_coda_cena'] = self.get_bookings_data(lookup_date)
 
 		return ctx
+
+	@staticmethod
+	def get_bookings_data(lookup_date_hour) -> Tuple[list, int]:
+		"""
+		Ritorna la lista di tavoli prenotati e numero di prenotazioni totali per quella data-ora
+		@param lookup_date_hour: datetime.datetime della data e ora da andare a guardare
+		@return: lista di tavoli prenotati e numero di persone in coda per l'orario.
+		Il numero può essere negativo se ci sono ancora tavoli liberi.
+		"""
+		try:
+			prenotati = Prenotazione.objects.filter(data_ora=lookup_date_hour).values_list('tavolo_id', flat=True)
+		except ObjectDoesNotExist:
+			prenotati = {}
+		in_coda = get_available_queue_place(lookup_date_hour)
+
+		return prenotati, in_coda
+
+
+def get_available_queue_place(lookup_date_hour) -> int:
+	"""
+	Ritorna il posto in coda che riceverebbe una nuova prenotazione per il dato orario
+	@param lookup_date_hour: datetime.datetime della data e ora da andare a guardare
+	@return: posto in coda, calcolato come numero di tavoli abilitati meno numero di prenotazioni nel dato orario.
+			Può essere negativo, nel qual caso vuol dire che ci sono ancora tavoli liberi.
+	"""
+	num_tavoli = Tavolo.objects.filter(abilitato=True).count()
+	num_prenotazioni = Prenotazione.objects.filter(data_ora=lookup_date_hour).count()
+	return num_prenotazioni - num_tavoli

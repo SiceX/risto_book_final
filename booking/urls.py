@@ -14,5 +14,7 @@ urlpatterns = [
 	path('prenotazioni/dashboard/<int:year>/<int:month>/<int:day>', DashboardPrenotazioni.as_view(),
 		name='dashboard-prenotazioni'),
 	path('prenotazioni/prenota/<str:tavolo>/<int:year>/<int:month>/<int:day>/<int:hour>',
-		 PrenotazioneCreate.as_view(), name='prenota-tavolo')
+		 PrenotazioneCreate.as_view(), name='prenota-tavolo'),
+	path('prenotazioni/prenota/<int:year>/<int:month>/<int:day>/<int:hour>',
+		 PrenotazioneCreate.as_view(), name='prenota-tavolo-in-coda')
 ]
