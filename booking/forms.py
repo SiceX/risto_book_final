@@ -69,6 +69,10 @@ class DateNavForm(forms.Form):
 			+ """ """ + next_date.strftime('%d') + """ %}" > Giorno Successivo </a>"""),
 		)
 
+		find_button = ButtonHolder(
+			HTML("""<a href="{% url 'booking:dashboard-prenotazioni-find' %}" > Trova primo giorno libero </a>"""),
+		)
+
 		self.helper = FormHelper()
 		self.helper.form_id = 'date_nav'
 		self.helper.form_method = 'POST'
@@ -78,6 +82,7 @@ class DateNavForm(forms.Form):
 				previous_button,
 				Submit('submit', 'Visualizza'),
 				next_button,
+				find_button
 			)
 		)
 	# helper.add_input(Submit('submit', 'Visualizza'))

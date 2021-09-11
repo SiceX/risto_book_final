@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timedelta
 import logging
 from collections import Counter
 from functools import partial
@@ -14,7 +14,7 @@ from django.forms import DateInput
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, DetailView, ListView, CreateView
+from django.views.generic import TemplateView, DetailView, ListView, CreateView, RedirectView
 from django.views.generic.edit import FormMixin, DeleteView
 from django.utils.timezone import make_aware
 from extra_views import ModelFormSetView
@@ -116,7 +116,7 @@ class PrenotazioneCreate(LoginRequiredMixin, CreateView):
 		month = self.kwargs["month"]
 		day = self.kwargs["day"]
 		hour = self.kwargs["hour"]
-		data_ora = make_aware(datetime.datetime(year, month, day, hour))
+		data_ora = make_aware(datetime(year, month, day, hour))
 		# Il posto nella coda di una nuova prenotazione equivale al numero di prenotazioni in coda attuali
 		queue_place = get_available_queue_place(data_ora)
 		if queue_place >= 0:
@@ -148,7 +148,7 @@ class DashboardPrenotazioni(ListView, FormMixin):
 	# 	return kwargs
 
 	def get_initial(self):
-		date = datetime.datetime(self.kwargs["year"], self.kwargs["month"], self.kwargs["day"])
+		date = datetime(self.kwargs["year"], self.kwargs["month"], self.kwargs["day"])
 		return {'datetime': date.strftime("%Y %m %d")}
 
 	def get_success_url(self):
@@ -190,11 +190,11 @@ class DashboardPrenotazioni(ListView, FormMixin):
 		# Creo due liste con gli id dei tavoli prenotati, uno per pranzo e uno per cena.
 		# Mi segno anche due contatori delle eventuali persone in coda, uno a pranzo ed uno a cena
 
-		lookup_date = make_aware(datetime.datetime(year, month, day, 12))
+		lookup_date = make_aware(datetime(year, month, day, 12))
 		ctx['prenotati_pranzo'], ctx['in_coda_pranzo'], ctx['has_already_booked_pranzo'] = \
 			self.get_bookings_data(lookup_date, user_id)
 
-		lookup_date = make_aware(datetime.datetime(year, month, day, 19))
+		lookup_date = make_aware(datetime(year, month, day, 19))
 		ctx['prenotati_cena'], ctx['in_coda_cena'], ctx['has_already_booked_cena'] = \
 			self.get_bookings_data(lookup_date, user_id)
 
@@ -222,6 +222,32 @@ class DashboardPrenotazioni(ListView, FormMixin):
 			has_already_booked = Prenotazione.objects.filter(data_ora=lookup_date_hour, utente=user_id).exists()
 
 		return prenotati, in_coda, has_already_booked
+
+
+class FindFirstFreeDayRedirectView(RedirectView):
+	permanent = False
+	query_string = False
+	pattern_name = 'booking:dashboard-prenotazioni'
+
+	def get_redirect_url(self, *args, **kwargs):
+		start_date = datetime.now().replace(hour=12, minute=0, second=0, microsecond=0) + timedelta(days=1)
+		for single_date in (start_date + timedelta(days=n) for n in range(30)):
+			pranzo_queue_status = get_available_queue_place(single_date)
+			if pranzo_queue_status >= 0:
+				return reverse_lazy('booking:dashboard-prenotazioni',
+									kwargs={"year": single_date.strftime('%Y'),
+											"month": single_date.strftime('%m'),
+											"day": single_date.strftime('%d')} )
+
+			single_date = single_date.replace(hour=19)
+			cena_queue_status = get_available_queue_place(single_date)
+			if cena_queue_status >= 0:
+				return reverse_lazy('booking:dashboard-prenotazioni',
+									kwargs={"year": single_date.strftime('%Y'),
+											"month": single_date.strftime('%m'),
+											"day": single_date.strftime('%d')})
+
+
 
 
 def get_available_queue_place(lookup_date_hour) -> int:
