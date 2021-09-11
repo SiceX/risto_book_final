@@ -50,7 +50,7 @@ class DateNavForm(forms.Form):
 		# day = kwargs['initial']['day']
 
 		date = datetime.strptime(kwargs['initial']['datetime'], "%Y %m %d")
-		self.data = forms.DateField(initial=date, widget=DateInput(), required=True)
+		self.data.initial = date
 
 		previous_date = date - timedelta(days=1)
 		next_date = date + timedelta(days=1)
