@@ -6,7 +6,9 @@ from functools import partial
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import send_mail
 from django.db.models import F
 from django.forms import DateInput
 from django.http import HttpResponseRedirect
@@ -67,12 +69,34 @@ class PrenotazioneDelete(LoginRequiredMixin, DeleteView):
 		# Dopo aver eliminato la prenotazione, decremento i segna-posto della lista d'attesa e assegno il tavolo al primo
 		if prenotazioni_in_coda is not None:
 			if tavolo_liberato_id is not None:
+				next_user = prenotazioni_in_coda.filter(queue_place=0).get().utente
+				PrenotazioneDelete.notify_next_in_line(next_user.email, tavolo_liberato_id, self.object.data_ora)
+
 				prenotazioni_in_coda.filter(queue_place=0).update(tavolo_id=tavolo_liberato_id, queue_place=None)
 				prenotazioni_in_coda.filter(queue_place__gt=0).update(queue_place=F('queue_place') - 1)
 			elif queue_place_liberato is not None:
 				prenotazioni_in_coda.filter(queue_place__gt=queue_place_liberato).update(queue_place=F('queue_place') - 1)
 
 		return HttpResponseRedirect(success_url)
+
+	@staticmethod
+	def notify_next_in_line(email, tavolo, data_ora):
+		"""
+		Non funziona davvero, perché non ho a mia disposizione un server SMTP da usare (e non mi ispira dover diminuire
+		la sicurezza dei miei account gmail), però dovrebbe inviare una mail di notifica all'utente che ha appena vinto
+		un tavolo appena liberato.
+		@param email: email dell'utente da notificare
+		@param tavolo: id/nome del tavolo appena assegnato
+		@param data_ora: datetime.datetime della prenotazione
+		"""
+		send_mail(
+			'Nuovo tavolo assegnato',
+			'Gentile cliente, un tavolo si è liberato!\n'
+			f'Le è stato assegnato il tavolo {tavolo} per la prenotazione delle {data_ora}.',
+			'noreply@ristobooking.com',
+			[email],
+			fail_silently=True,
+		)
 
 
 class PrenotazioneCreate(LoginRequiredMixin, CreateView):

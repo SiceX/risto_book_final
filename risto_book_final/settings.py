@@ -127,3 +127,9 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+# SMTP
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+# EMAIL_HOST_USER = ''
+# EMAIL_HOST_PASSWORD = ''
