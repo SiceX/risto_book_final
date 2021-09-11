@@ -67,7 +67,7 @@ class PrenotazioneDelete(LoginRequiredMixin, DeleteView):
 		self.object.delete()
 
 		# Dopo aver eliminato la prenotazione, decremento i segna-posto della lista d'attesa e assegno il tavolo al primo
-		if prenotazioni_in_coda is not None:
+		if prenotazioni_in_coda.exists():
 			if tavolo_liberato_id is not None:
 				next_user = prenotazioni_in_coda.filter(queue_place=0).get().utente
 				PrenotazioneDelete.notify_next_in_line(next_user.email, tavolo_liberato_id, self.object.data_ora)
