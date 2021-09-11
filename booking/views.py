@@ -68,7 +68,7 @@ class PrenotazioneDelete(LoginRequiredMixin, DeleteView):
 		if prenotazioni_in_coda is not None:
 			if tavolo_liberato_id is not None:
 				prenotazioni_in_coda.filter(queue_place=0).update(tavolo_id=tavolo_liberato_id, queue_place=None)
-				prenotazioni_in_coda.filter(queue_place__gt=0).update(queue_place=F('queue_place')-1)
+				prenotazioni_in_coda.filter(queue_place__gt=0).update(queue_place=F('queue_place') - 1)
 			elif queue_place_liberato is not None:
 				prenotazioni_in_coda.filter(queue_place__gt=queue_place_liberato).update(queue_place=F('queue_place') - 1)
 

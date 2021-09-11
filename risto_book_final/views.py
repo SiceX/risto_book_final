@@ -5,6 +5,8 @@ from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView
 
+from risto_book_final.forms import UserCreationWithEmailForm
+
 _logger = logging.getLogger(__name__)
 
 
@@ -18,6 +20,6 @@ class Home(TemplateView):
 
 
 class UserCreationView(CreateView):
-    form_class = UserCreationForm
+    form_class = UserCreationWithEmailForm
     template_name = 'registration/user_create.html'
     success_url = reverse_lazy('home')
