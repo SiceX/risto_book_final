@@ -75,7 +75,8 @@ class PrenotazioneDelete(LoginRequiredMixin, DeleteView):
 				prenotazioni_in_coda.filter(queue_place=0).update(tavolo_id=tavolo_liberato_id, queue_place=None)
 				prenotazioni_in_coda.filter(queue_place__gt=0).update(queue_place=F('queue_place') - 1)
 			elif queue_place_liberato is not None:
-				prenotazioni_in_coda.filter(queue_place__gt=queue_place_liberato).update(queue_place=F('queue_place') - 1)
+				prenotazioni_in_coda.filter(queue_place__gt=queue_place_liberato).update(
+					queue_place=F('queue_place') - 1)
 
 		return HttpResponseRedirect(success_url)
 
@@ -139,6 +140,17 @@ class DashboardPrenotazioni(ListView, FormMixin):
 	month = None
 	day = None
 
+	# def get_form_kwargs(self):
+	# 	kwargs = super().get_form_kwargs()
+	# 	kwargs['year'] = self.kwargs["year"]
+	# 	kwargs['month'] = self.kwargs["month"]
+	# 	kwargs['day'] = self.kwargs["day"]
+	# 	return kwargs
+
+	def get_initial(self):
+		date = datetime.datetime(self.kwargs["year"], self.kwargs["month"], self.kwargs["day"])
+		return {'datetime': date.strftime("%Y %m %d")}
+
 	def get_success_url(self):
 		return reverse_lazy('booking:dashboard-prenotazioni', kwargs={
 			'year': self.year,
@@ -183,7 +195,7 @@ class DashboardPrenotazioni(ListView, FormMixin):
 			self.get_bookings_data(lookup_date, user_id)
 
 		lookup_date = make_aware(datetime.datetime(year, month, day, 19))
-		ctx['prenotati_cena'],	ctx['in_coda_cena'], ctx['has_already_booked_cena'] = \
+		ctx['prenotati_cena'], ctx['in_coda_cena'], ctx['has_already_booked_cena'] = \
 			self.get_bookings_data(lookup_date, user_id)
 
 		return ctx
