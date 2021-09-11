@@ -1,4 +1,5 @@
 {% load static %}
+{% load common_tags %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -27,9 +28,9 @@
 						<a href="{% url 'menu:menu' %}" class="nav-link active" aria-current="page">Menù</a>
 					</li>
 					<li class="nav-item">
-						{% now "Y" as year %}
-						{% now "m" as month %}
-						{% now "d" as day %}
+						{% calc_date_from_now "%Y" 1 as year %}
+						{% calc_date_from_now "%m" 1 as month %}
+						{% calc_date_from_now "%d" 1 as day %}
 						<a href="{% url 'booking:dashboard-prenotazioni' year month day %}"
 						   class="nav-link active" aria-current="page">Prenotazione tavoli</a>
 					</li>
