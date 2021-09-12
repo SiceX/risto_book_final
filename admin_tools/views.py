@@ -4,6 +4,7 @@ from django.views.generic import CreateView, DetailView, ListView
 from extra_views import ModelFormSetView
 
 from admin_tools import forms
+from admin_tools.forms import GestisciTavoliForm
 from booking.models import Tavolo
 
 
@@ -27,4 +28,4 @@ class TavoloList(ListView):
 class TavoloListAndUpdate(ModelFormSetView):
 	model = Tavolo
 	template_name = 'admin_tools/tavolo/updateList.html'
-	form_class = forms.GestisciTavoliForm
+	form_class = GestisciTavoliForm

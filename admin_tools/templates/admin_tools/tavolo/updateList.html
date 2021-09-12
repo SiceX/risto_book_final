@@ -6,9 +6,9 @@
 
 {% block content %}
 	<h2>Lista Tavoli</h2>
-	<form method="post">{% csrf_token %}
-		{{ formset }}
-		<input type="submit" value="Conferma">
-	</form>
-{#	{% crispy form  %}#}
+{#	<form method="post">{% csrf_token %}#}
+{#		{{ formset }}#}
+{#		<input type="submit" value="Conferma">#}
+{#	</form>#}
+	{% crispy formset  %}
 {% endblock %}
