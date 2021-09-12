@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'booking.apps.BookingConfig',
     'admin_tools.apps.AdminToolsConfig',
     'menu.apps.MenuConfig',
-    'crispy_forms'
+    'crispy_forms',
+    'extra_views'
 ]
 
 MIDDLEWARE = [
