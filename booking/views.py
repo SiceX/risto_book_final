@@ -232,20 +232,18 @@ class FindFirstFreeDayRedirectView(RedirectView):
 	def get_redirect_url(self, *args, **kwargs):
 		start_date = datetime.now().replace(hour=12, minute=0, second=0, microsecond=0) + timedelta(days=1)
 		for single_date in (start_date + timedelta(days=n) for n in range(30)):
+			kwargs = {"year": single_date.strftime('%Y'),
+					 "month": single_date.strftime('%m'),
+					 "day": single_date.strftime('%d')}
+
 			pranzo_queue_status = get_available_queue_place(single_date)
-			if pranzo_queue_status >= 0:
-				return reverse_lazy('booking:dashboard-prenotazioni',
-									kwargs={"year": single_date.strftime('%Y'),
-											"month": single_date.strftime('%m'),
-											"day": single_date.strftime('%d')} )
+			if pranzo_queue_status < 0:
+				return super().get_redirect_url(*args, **kwargs)
 
 			single_date = single_date.replace(hour=19)
 			cena_queue_status = get_available_queue_place(single_date)
-			if cena_queue_status >= 0:
-				return reverse_lazy('booking:dashboard-prenotazioni',
-									kwargs={"year": single_date.strftime('%Y'),
-											"month": single_date.strftime('%m'),
-											"day": single_date.strftime('%d')})
+			if cena_queue_status < 0:
+				return super().get_redirect_url(*args, **kwargs)
 
 
 
