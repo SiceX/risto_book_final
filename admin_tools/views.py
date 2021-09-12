@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
+from extra_views import ModelFormSetView
 
 from booking.models import Tavolo
 
@@ -20,3 +21,10 @@ class TavoloDetail(DetailView):
 class TavoloList(ListView):
 	model = Tavolo
 	template_name = 'admin_tools/tavolo/list.html'
+
+
+class TavoloListAndUpdate(ModelFormSetView):
+	model = Tavolo
+	fields = ['nome', 'abilitato']
+	template_name = 'admin_tools/tavolo/updateList.html'
+	# form_class = forms
