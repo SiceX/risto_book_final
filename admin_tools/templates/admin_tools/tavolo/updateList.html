@@ -6,14 +6,13 @@
 {% block list_title %}Lista Tavoli{% endblock %}
 
 {% block optional_content %}
-	<form method="post">{% csrf_token %}
+	<form action="" method="POST">{% csrf_token %}
 {% endblock %}
 
 	{% block table_head %}
 		{% csrf_token %}
 		<th>Nome</th>
 		<th>Abilitato</th>
-{#		<th>Conferma Modifica</th>#}
 		<th>Dettaglio</th>
 	{% endblock %}
 
@@ -29,9 +28,6 @@
 					{{ form.nome.errors }}
 					{{ form.abilitato }}
 				</td>
-{#				<td>#}
-{#					<input type="submit" value="Conferma">#}
-{#				</td>#}
 				<td>
 					<a href="{% url 'admin_tools:tavolo-detail' form.nome.value %}">Dettaglio</a>
 				</td>
@@ -40,6 +36,7 @@
 	{% endblock %}
 
 {% block optional_tail_content %}
+		{{ formset.management_form }}
 		<input type="submit" value="Conferma">
 	</form>
 {% endblock %}
