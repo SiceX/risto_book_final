@@ -14,23 +14,25 @@ class GestisciTavoliForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 
-		tavolo = self.initial['nome']
-
-		layout = Layout(
-			HTML("""<tr>"""),
-			Fieldset(
-				HTML("""<td>"""),
-				'nome',
-				HTML("""</td>"""),
-				HTML("""<td>"""),
-				'abilitato',
-				HTML("""</td>"""),
-				HTML("""<td> <a href="{% url 'admin_tools:tavolo-detail' """ + tavolo + """ %}">Dettaglio</a> </td>"""),
-			),
-			HTML("""</tr>""")
-		)
+		# layout = None
+		# if 'nome' in self.initial:
+		# 	tavolo = self.initial['nome']
+		#
+		# 	layout = Layout(
+		# 		HTML("""<tr>"""),
+		# 		Fieldset(
+		# 			HTML("""<td>"""),
+		# 			'nome',
+		# 			HTML("""</td>"""),
+		# 			HTML("""<td>"""),
+		# 			'abilitato',
+		# 			HTML("""</td>"""),
+		# 			HTML("""<td> <a href="{% url 'admin_tools:tavolo-detail' """ + tavolo + """ %}">Dettaglio</a> </td>"""),
+		# 		),
+		# 		HTML("""</tr>""")
+		# 	)
 
 		self.helper = FormHelper()
 		self.helper.form_id = 'manage_tavoli_crispy_form'
 		self.helper.form_method = 'POST'
-		self.helper.layout = layout
+		# self.helper.layout = layout

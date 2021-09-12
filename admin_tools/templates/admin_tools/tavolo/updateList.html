@@ -1,21 +1,45 @@
 {% extends 'base_list.html' %}
+{#{% extends 'base_list.html' %}#}
 {% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
 
 {% block list_title %}Lista Tavoli{% endblock %}
 
 {% block optional_content %}
-{#	<form method="post">{% csrf_token %}#}
-{#		{{ formset }}#}
-{#		<input type="submit" value="Conferma">#}
-{#	</form>#}
+	<form method="post">{% csrf_token %}
 {% endblock %}
 
-{% block table_head %}
-	<th>Nome</th>
-	<th>Abilitato</th>
-	<th>Dettaglio</th>
-{% endblock %}
+	{% block table_head %}
+		{% csrf_token %}
+		<th>Nome</th>
+		<th>Abilitato</th>
+{#		<th>Conferma Modifica</th>#}
+		<th>Dettaglio</th>
+	{% endblock %}
 
-{% block table_body %}
-	{% crispy formset  %}
+	{% block table_body %}
+	{#	{% crispy formset  %}#}
+		{% for form in formset %}
+			<tr>
+				<td>
+					{{ form.nome.errors }}
+					{{ form.nome }}
+				</td>
+				<td>
+					{{ form.nome.errors }}
+					{{ form.abilitato }}
+				</td>
+{#				<td>#}
+{#					<input type="submit" value="Conferma">#}
+{#				</td>#}
+				<td>
+					<a href="{% url 'admin_tools:tavolo-detail' form.nome.value %}">Dettaglio</a>
+				</td>
+			</tr>
+		{% endfor %}
+	{% endblock %}
+
+{% block optional_tail_content %}
+		<input type="submit" value="Conferma">
+	</form>
 {% endblock %}
