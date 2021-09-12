@@ -1,14 +1,21 @@
-{% extends 'base.html' %}
+{% extends 'base_list.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %}Lista Tavoli{% endblock %}
+{% block list_title %}Lista Tavoli{% endblock %}
 
-
-{% block content %}
-	<h2>Lista Tavoli</h2>
+{% block optional_content %}
 {#	<form method="post">{% csrf_token %}#}
 {#		{{ formset }}#}
 {#		<input type="submit" value="Conferma">#}
 {#	</form>#}
+{% endblock %}
+
+{% block table_head %}
+	<th>Nome</th>
+	<th>Abilitato</th>
+	<th>Dettaglio</th>
+{% endblock %}
+
+{% block table_body %}
 	{% crispy formset  %}
 {% endblock %}
