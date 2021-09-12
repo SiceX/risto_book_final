@@ -41,6 +41,9 @@
         <option value="$MODULE_DIR$/booking/templates/booking/prenotazione" />
         <option value="$MODULE_DIR$/templates/registration" />
         <option value="$MODULE_DIR$/templates/utils" />
+        <option value="$MODULE_DIR$/admin_tools/templates" />
+        <option value="$MODULE_DIR$/admin_tools/templates/admin_tools" />
+        <option value="$MODULE_DIR$/admin_tools/templates/admin_tools/tavolo" />
       </list>
     </option>
   </component>

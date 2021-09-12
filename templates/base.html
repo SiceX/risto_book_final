@@ -39,6 +39,11 @@
 							<a href="{% url 'booking:prenotazione-list' %}" class="nav-link active"
 							   aria-current="page">Le mie prenotazioni</a>
 						</li>
+						{% if user.is_superuser %}
+							<li class="nav-item">
+								<a href="{% url 'admin_tools:tavolo-list' %}" class="nav-link active" aria-current="page">Gestisci i tavoli</a>
+							</li>
+						{% endif %}
 						<li class="nav-item">
 							<a href="{% url 'logout' %}" class="nav-link active" aria-current="page">Logout</a>
 						</li>

@@ -28,5 +28,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('logout', LogoutView.as_view(), name='logout'),
     path('booking/', include('booking.urls')),
-    path('menu/', include('menu.urls'))
+    path('menu/', include('menu.urls')),
+    path('manage/', include('admin_tools.urls'))
 ]
