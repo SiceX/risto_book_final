@@ -15,7 +15,7 @@
 		<tr>
 			<td>{{ tavolo.nome }}</td>
 			<td>{{ tavolo.abilitato }}</td>
-			<td><a href="{% url 'booking:tavolo-detail' tavolo.pk %}">Dettaglio</a> </td>
+			<td><a href="{% url 'admin_tools:tavolo-detail' tavolo.pk %}">Dettaglio</a> </td>
 		</tr>
 	{% endfor %}
 {% endblock %}
