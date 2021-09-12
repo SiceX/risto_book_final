@@ -9,7 +9,7 @@ class TavoloCreate(CreateView):
 	model = Tavolo
 	template_name = 'admin_tools/tavolo/create.html'
 	fields = ['nome', 'abilitato']
-	success_url = reverse_lazy('booking:tavolo-list')
+	success_url = reverse_lazy('admin_tools:tavolo-list')
 
 
 class TavoloDetail(DetailView):
