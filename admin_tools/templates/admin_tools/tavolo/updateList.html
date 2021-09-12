@@ -13,7 +13,7 @@
 		{% csrf_token %}
 		<th>Nome</th>
 		<th>Abilitato</th>
-		<th>Dettaglio</th>
+		<th>Azioni</th>
 	{% endblock %}
 
 	{% block table_body %}
@@ -29,7 +29,11 @@
 					{{ form.abilitato }}
 				</td>
 				<td>
-					<a href="{% url 'admin_tools:tavolo-detail' form.nome.value %}">Dettaglio</a>
+					{% if form.nome.value %}
+						<a href="{% url 'admin_tools:tavolo-detail' form.nome.value %}">Dettaglio</a>
+					{% else %}
+						Qua puoi creare un nuovo tavolo
+					{% endif %}
 				</td>
 			</tr>
 		{% endfor %}
