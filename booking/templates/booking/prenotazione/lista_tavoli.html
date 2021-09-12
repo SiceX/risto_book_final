@@ -38,6 +38,8 @@
 						{% if user.is_authenticated %}
 							<td>
 								<a href="" role="button" class="btn btn-info disabled">Prenota Tavolo</a>
+								<a href="{% url 'booking:dashboard-prenotazioni-find-for-table' tavolo.nome %}"
+								   role="button" class="btn btn-primary">Trova primo giorno libero per questo tavolo</a>
 							</td>
 						{% endif %}
 

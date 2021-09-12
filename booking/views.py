@@ -229,6 +229,26 @@ class FindFirstFreeDayRedirectView(RedirectView):
 				return super().get_redirect_url(*args, **kwargs)
 
 
+class FindFirstFreeDayForTableRedirectView(RedirectView):
+	permanent = False
+	query_string = False
+	pattern_name = 'booking:dashboard-prenotazioni'
+
+	def get_redirect_url(self, *args, **kwargs):
+		start_date = datetime.now().replace(hour=12, minute=0, second=0, microsecond=0) + timedelta(days=1)
+		for single_date in (start_date + timedelta(days=n) for n in range(30)):
+			kwargs = {"year": single_date.strftime('%Y'),
+					 "month": single_date.strftime('%m'),
+					 "day": single_date.strftime('%d')}
+
+			if is_tavolo_prenotato(single_date, None):
+				return super().get_redirect_url(*args, **kwargs)
+
+			single_date = single_date.replace(hour=19)
+			if is_tavolo_prenotato(single_date, None):
+				return super().get_redirect_url(*args, **kwargs)
+
+
 def get_available_queue_place(lookup_date_hour) -> int:
 	"""
 	Ritorna il posto in coda che riceverebbe una nuova prenotazione per il dato orario
@@ -239,3 +259,7 @@ def get_available_queue_place(lookup_date_hour) -> int:
 	num_tavoli = Tavolo.objects.filter(abilitato=True).count()
 	num_prenotazioni = Prenotazione.objects.filter(data_ora=lookup_date_hour).count()
 	return num_prenotazioni - num_tavoli
+
+
+def is_tavolo_prenotato(lookup_date_hour, tavolo) -> bool:
+	return Prenotazione.objects.filter(data_ora=lookup_date_hour, tavolo_id=tavolo).exists()
