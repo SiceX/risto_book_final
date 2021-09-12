@@ -246,8 +246,6 @@ class FindFirstFreeDayRedirectView(RedirectView):
 				return super().get_redirect_url(*args, **kwargs)
 
 
-
-
 def get_available_queue_place(lookup_date_hour) -> int:
 	"""
 	Ritorna il posto in coda che riceverebbe una nuova prenotazione per il dato orario
