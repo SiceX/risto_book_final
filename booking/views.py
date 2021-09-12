@@ -26,23 +26,6 @@ from booking.models import Tavolo, Prenotazione
 _logger = logging.getLogger(__name__)
 
 
-class TavoloCreate(CreateView):
-	model = Tavolo
-	template_name = 'booking/tavolo/create.html'
-	fields = ['nome', 'abilitato']
-	success_url = reverse_lazy('booking:tavolo-list')
-
-
-class TavoloDetail(DetailView):
-	model = Tavolo
-	template_name = 'booking/tavolo/detail.html'
-
-
-class TavoloList(ListView):
-	model = Tavolo
-	template_name = 'booking/tavolo/list.html'
-
-
 class PrenotazioneList(LoginRequiredMixin, ListView):
 	model = Prenotazione
 	template_name = 'booking/prenotazione/list.html'
