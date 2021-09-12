@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}Elimina Tavolo{% endblock %}
+
+{% block content %}
+    <h1>Elimina Tavolo</h1>
+    <h2>Stai per eliminare questo tavolo, tutte le prenotazioni connesse verranno annullate. Sei sicuro?</h2>
+	<p>Tavolo {{ object.nome }}</p>
+    <p>Abilitato: {{ object.abilitato }}</p>
+    <form method="post">{% csrf_token %}
+        {{ form|crispy }}
+        <a href="{% url 'admin_tools:tavolo-manage-list' %}" role="button" class="btn btn-warning">Annulla</a>
+        <input role="button" class="btn btn-danger" type="submit" value="Conferma">
+    </form>
+{% endblock %}

@@ -31,6 +31,7 @@
 				<td>
 					{% if form.nome.value %}
 						<a href="{% url 'admin_tools:tavolo-detail' form.nome.value %}">Dettaglio</a>
+						<a href="{% url 'admin_tools:tavolo-delete' form.nome.value %}">Elimina</a>
 					{% else %}
 						Qua puoi creare un nuovo tavolo
 					{% endif %}
