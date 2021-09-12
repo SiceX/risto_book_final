@@ -45,10 +45,6 @@ class DateNavForm(forms.Form):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 
-		# year = kwargs['initial']['year']
-		# month = kwargs['initial']['month']
-		# day = kwargs['initial']['day']
-
 		date = datetime.strptime(kwargs['initial']['datetime'], "%Y %m %d")
 		self.data.initial = date
 
@@ -60,17 +56,20 @@ class DateNavForm(forms.Form):
 			previous_button = ButtonHolder(
 				HTML("""<a href="{% url 'booking:dashboard-prenotazioni' """ + previous_date.strftime('%Y')
 				+ """ """ + previous_date.strftime('%m')
-				+ """ """ + previous_date.strftime('%d') + """ %}" > Giorno Precedente </a>"""),
+				+ """ """ + previous_date.strftime('%d') + """ %}" 
+				class="btn btn-success"> Giorno Precedente </a>"""),
 			)
 
 		next_button = ButtonHolder(
 			HTML("""<a href="{% url 'booking:dashboard-prenotazioni' """ + next_date.strftime('%Y')
 			+ """ """ + next_date.strftime('%m')
-			+ """ """ + next_date.strftime('%d') + """ %}" > Giorno Successivo </a>"""),
+			+ """ """ + next_date.strftime('%d') + """ %}" 
+				class="btn btn-success"> Giorno Successivo </a>"""),
 		)
 
 		find_button = ButtonHolder(
-			HTML("""<a href="{% url 'booking:dashboard-prenotazioni-find' %}" > Trova primo giorno libero </a>"""),
+			HTML("""<a href="{% url 'booking:dashboard-prenotazioni-find' %}" 
+				class="btn btn-success"> Trova primo giorno libero </a>"""),
 		)
 
 		self.helper = FormHelper()
@@ -85,4 +84,3 @@ class DateNavForm(forms.Form):
 				find_button
 			)
 		)
-	# helper.add_input(Submit('submit', 'Visualizza'))
