@@ -1,21 +1,19 @@
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 
 
 def upload_to(instance, filename):
-	return 'user/%s/%s' % (instance.user.user.pk, filename)
+	return 'user/%s/%s' % (instance.utente.id, filename)
 
 
 class ImmagineProfilo(models.Model):
-	utente = models.ForeignKey(
-		settings.AUTH_USER_MODEL,
-		on_delete=models.CASCADE
-	)
-	immagine = models.ImageField(upload_to=upload_to)
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	profile_picture = models.ImageField(upload_to=upload_to)
 
 	class Meta:
-		unique_together = [['id', 'utente']]
+		unique_together = [['user', 'profile_picture']]
 		verbose_name_plural = 'Immagini Profilo'
 
 	def __str__(self):
-		return f'{self.utente} - {self.pk}'
+		return f'{self.user} - {self.pk}'

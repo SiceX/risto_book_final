@@ -22,25 +22,18 @@ class UserCreationWithEmailForm(UserCreationForm):
 
 
 class EditProfileForm(UserChangeForm):
-    profile_picture = ImageField(required=False)
+    # profile_picture = ImageField(required=False)
     username = CharField(widget=TextInput(attrs={'class': 'form-control'}))
     email = EmailField(widget=EmailInput(attrs={'class': 'form-control'}))
     password = None
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     user_id = kwargs['initial']['user_id']
-    #     if ImmagineProfilo.objects.filter(utente_id=user_id).exists():
-    #         self.fields["profile_picture"] = ImmagineProfilo.objects.filter(utente_id=user_id).get()
-
     class Meta:
-        model = User
-        fields = ("username", "email", "profile_picture")
+        model = ImmagineProfilo
+        fields = ("username", "email")
 
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data["email"]
-        ImmagineProfilo.objects.update_or_create(utente_id=user.id, immagine=self.cleaned_data["profile_picture"])
         if commit:
             user.save()
         return user
