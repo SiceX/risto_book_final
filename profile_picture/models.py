@@ -4,7 +4,7 @@ from django.db import models
 
 
 def upload_to(instance, filename):
-	return 'user/%s/%s' % (instance.utente.id, filename)
+	return 'user/%s/%s' % (instance.user_id, filename)
 
 
 class ImmagineProfilo(models.Model):

@@ -7,7 +7,7 @@ from profile_picture.forms import EditPropicForm
 
 def upload_file(request):
     if request.method == 'POST':
-        form = EditPropicForm(request.POST, request.FILES)
+        form = EditPropicForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
             # file is saved
             form.save()

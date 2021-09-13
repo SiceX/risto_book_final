@@ -7,15 +7,19 @@ from profile_picture.models import ImmagineProfilo
 
 
 class EditPropicForm(ModelForm):
+    # user_id = IntegerField(disabled=True)
     profile_picture = ImageField(required=False)
 
     class Meta:
         model = ImmagineProfilo
-        fields = ("profile_picture")
+        fields = ("profile_picture",)
 
-    # def save(self, commit=True):
-    #     user = super().save(commit=False)
-    #     user.email = self.cleaned_data["email"]
-    #     if commit:
-    #         user.save()
-    #     return user
+    def __init__(self, *args, **kwargs):
+        self.user_id = kwargs.pop('user')
+        super(EditPropicForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if commit:
+            user.save()
+        return user
