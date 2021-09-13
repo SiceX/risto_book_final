@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'booking.apps.BookingConfig',
     'admin_tools.apps.AdminToolsConfig',
     'menu.apps.MenuConfig',
+    'profile_picture.apps.ProfilePictureConfig',
     'crispy_forms',
     'extra_views'
 ]

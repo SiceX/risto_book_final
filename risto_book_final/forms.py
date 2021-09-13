@@ -1,7 +1,9 @@
-from django.forms import EmailField, EmailInput, CharField, TextInput
+from django.forms import EmailField, EmailInput, CharField, TextInput, ImageField
 
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+
+from profile_picture.models import ImmagineProfilo
 
 
 class UserCreationWithEmailForm(UserCreationForm):
@@ -20,9 +22,14 @@ class UserCreationWithEmailForm(UserCreationForm):
 
 
 class EditProfileForm(UserChangeForm):
+    profile_picture = ImageField()
     username = CharField(widget=TextInput(attrs={'class': 'form-control'}))
     email = EmailField(widget=EmailInput(attrs={'class': 'form-control'}))
     password = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['profile_picture'] = ImmagineProfilo.objects.filter(utente=self.request.user).get()
 
     class Meta:
         model = User
