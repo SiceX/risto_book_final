@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import include, path
-from risto_book_final.views import maintenance, Home, UserCreationView
+from risto_book_final.views import maintenance, Home, UserCreationView, UserEditView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +27,7 @@ urlpatterns = [
     path('register/', UserCreationView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout', LogoutView.as_view(), name='logout'),
+    path('profile', UserEditView.as_view(), name='profile'),
     path('booking/', include('booking.urls')),
     path('menu/', include('menu.urls')),
     path('manage/', include('admin_tools.urls'))

@@ -1,7 +1,7 @@
-from django.forms import EmailField
+from django.forms import EmailField, EmailInput, CharField, TextInput
 
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 
 class UserCreationWithEmailForm(UserCreationForm):
@@ -17,3 +17,20 @@ class UserCreationWithEmailForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class EditProfileForm(UserChangeForm):
+    username = CharField(widget=TextInput(attrs={'class': 'form-control'}))
+    email = EmailField(widget=EmailInput(attrs={'class': 'form-control'}))
+    password = None
+
+    class Meta:
+        model = User
+        fields = ("username", "email")
+    #
+    # def save(self, commit=True):
+    #     user = super().save(commit=False)
+    #     user.email = self.cleaned_data["email"]
+    #     if commit:
+    #         user.save()
+    #     return user
