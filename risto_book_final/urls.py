@@ -17,7 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import include, path
+
+from risto_book_final import settings
 from risto_book_final.views import maintenance, Home, UserCreationView, UserEditView
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,4 +34,4 @@ urlpatterns = [
     path('booking/', include('booking.urls')),
     path('menu/', include('menu.urls')),
     path('manage/', include('admin_tools.urls'))
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

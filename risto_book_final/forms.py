@@ -27,11 +27,11 @@ class EditProfileForm(UserChangeForm):
     email = EmailField(widget=EmailInput(attrs={'class': 'form-control'}))
     password = None
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        user_id = kwargs['initial']['user_id']
-        if ImmagineProfilo.objects.filter(utente_id=user_id).exists():
-            self.profile_picture.initial = ImmagineProfilo.objects.filter(utente_id=user_id).get()
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     user_id = kwargs['initial']['user_id']
+    #     if ImmagineProfilo.objects.filter(utente_id=user_id).exists():
+    #         self.fields["profile_picture"] = ImmagineProfilo.objects.filter(utente_id=user_id).get()
 
     class Meta:
         model = User

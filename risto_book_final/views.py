@@ -30,9 +30,10 @@ class UserEditView(UpdateView):
     template_name = 'registration/edit_profile.html'
     success_url = reverse_lazy('home')
 
-    def get_initial(self):
-        user_id = self.request.user.id
-        return {'user_id': user_id}
+    # def get_initial(self):
+    #     user_id = self.request.user.id
+    #
+    #     return super().get_initial()
 
     def get_object(self, queryset=None):
         return self.request.user
