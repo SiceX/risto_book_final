@@ -7,7 +7,7 @@ class ImmagineProfilo(models.Model):
 		settings.AUTH_USER_MODEL,
 		on_delete=models.CASCADE
 	)
-	immagine = models.ImageField()
+	immagine = models.ImageField(upload_to='user/img/%Y-%m-%d/')
 
 	class Meta:
 		unique_together = [['id', 'utente']]
