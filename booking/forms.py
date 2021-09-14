@@ -3,9 +3,11 @@ from datetime import datetime, timedelta
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.layout import Submit, Layout, Field, Button, ButtonHolder, HTML
 from django import forms
+from django.core.exceptions import ValidationError
 from django.forms import DateInput, TextInput, HiddenInput
 from crispy_forms.helper import FormHelper
 from django.urls import reverse_lazy
+from django.utils import timezone
 
 from booking.models import Prenotazione
 
@@ -34,13 +36,21 @@ class PrenotazioneForm(forms.ModelForm):
 		if 'queue_place' not in self.initial:
 			self.fields['queue_place'].widget = HiddenInput()
 
+	def clean(self):
+		cleaned_data = super().clean()
+		data = cleaned_data.get('data_ora')
+		if data:
+			if data.date() < (timezone.now().date() + timedelta(days=1)):
+				raise ValidationError("Non è possibile prenotare pranzi o cene per oggi o nel passato")
+		return cleaned_data
+
 	class Meta:
 		model = Prenotazione
 		fields = ['tavolo', 'data_ora', 'queue_place']
 
 
 class DateNavForm(forms.Form):
-	data = forms.DateField(widget=DateInput(), required=True)
+	data = forms.DateField(widget=DateInput(), required=True, )
 
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
@@ -84,3 +94,12 @@ class DateNavForm(forms.Form):
 				find_button
 			)
 		)
+
+	# def clean(self):
+	# 	cleaned_data = super().clean()
+	# 	data = cleaned_data.get('data')
+	# 	if data:
+	# 		data = datetime.strptime(data, "%Y %m %d")
+	# 		if data.date() < (timezone.now().date() + timedelta(days=1)):
+	# 			raise ValidationError("Non è possibile prenotare pranzi o cene per oggi o nel passato")
+	# 	return cleaned_data
