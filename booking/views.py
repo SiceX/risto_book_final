@@ -11,7 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
 from django.db.models import F
 from django.forms import DateInput
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, ListView, CreateView, RedirectView
@@ -113,6 +113,17 @@ class PrenotazioneCreate(LoginRequiredMixin, CreateView):
 		self.object.utente = self.request.user
 		self.object.save()
 		return HttpResponseRedirect(self.get_success_url())
+
+
+def dashboardPrenotazioniController(request, year, month, day):
+	coso = None
+	kwargs = {'year': year, 'month': month, 'day': day}
+	date = datetime(year, month, day)
+	if date.date() < (timezone.now().date() + timedelta(days=1)):
+		tomorrow = datetime.now().date() + timedelta(days=1)
+		kwargs = {'year': tomorrow.year, 'month': tomorrow.month, 'day': tomorrow.day}
+		return DashboardPrenotazioni.as_view()(request, **kwargs)
+	return DashboardPrenotazioni.as_view()(request, **kwargs)
 
 
 class DashboardPrenotazioni(ListView, FormMixin):
