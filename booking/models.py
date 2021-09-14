@@ -1,3 +1,5 @@
+import datetime
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
@@ -39,8 +41,8 @@ class Prenotazione(models.Model):
 		verbose_name_plural = 'Prenotazioni'
 
 	def save(self, *args, **kwargs):
-		if self.data_ora < timezone.now():
-			raise ValidationError("Non è possibile prenotare pranzi o cene nel passato")
+		if self.data_ora < (timezone.now().date() + datetime.timedelta(days=1)):
+			raise ValidationError("Non è possibile prenotare pranzi o cene per oggi o nel passato")
 		super(Prenotazione, self).save(*args, **kwargs)
 
 	def __str__(self):
