@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
+{% load common_tags %}
 
 {% block title %}Dashboard Prenotazioni{% endblock %}
 
@@ -11,6 +12,12 @@
 <h1>Dashboard Prenotazioni</h1>>
 
 {% block content %}
+
+	{% with request.resolver_match.kwargs as kwargs%}
+		{% get_date kwargs.year kwargs.month kwargs.day as data_scelta %}
+		<h3>{{ data_scelta|date:"l j" }} of {{ data_scelta|date:"F Y" }}</h3>
+	{% endwith %}
+
 {#	<form method="post">{% csrf_token %}#}
 {#		{{ form|crispy }}#}
 {#		<input type="submit" value="Visualizza">#}
