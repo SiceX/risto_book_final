@@ -37,12 +37,12 @@ class Prenotazione(models.Model):
 
 	class Meta:
 		unique_together = [['data_ora', 'queue_place'],
-						   ['data_ora', 'utente']]
+						   ['data_ora', 'tavolo']]
 		verbose_name_plural = 'Prenotazioni'
 
 	def save(self, *args, **kwargs):
-		if self.data_ora.date() < (timezone.now().date() + datetime.timedelta(days=1)):
-			raise ValidationError("Non è possibile prenotare pranzi o cene per oggi o nel passato")
+		if self.data_ora < (timezone.now().date() + datetime.timedelta(days=1)):
+			raise ValidationError("Non è possibile creare nuove prenotazioni per oggi o nel passato")
 		super(Prenotazione, self).save(*args, **kwargs)
 
 	def __str__(self):
