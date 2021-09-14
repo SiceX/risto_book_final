@@ -1,8 +1,8 @@
-from datetime import datetime, timedelta
 import logging
+import pytz
 from collections import Counter
 from functools import partial
-
+from datetime import datetime, timedelta
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -17,6 +17,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, ListView, CreateView, RedirectView
 from django.views.generic.edit import FormMixin, DeleteView
 from django.utils.timezone import make_aware
+from django.utils import timezone
 from extra_views import ModelFormSetView
 from typing import Tuple
 
@@ -32,7 +33,7 @@ class PrenotazioneList(LoginRequiredMixin, ListView):
 
 	def get_queryset(self):
 		queryset = super().get_queryset()
-		return queryset.filter(utente=self.request.user)
+		return queryset.filter(utente=self.request.user,  data_ora__gte=timezone.now())
 
 
 class PrenotazioneDelete(LoginRequiredMixin, DeleteView):
@@ -122,13 +123,6 @@ class DashboardPrenotazioni(ListView, FormMixin):
 	year = None
 	month = None
 	day = None
-
-	# def get_form_kwargs(self):
-	# 	kwargs = super().get_form_kwargs()
-	# 	kwargs['year'] = self.kwargs["year"]
-	# 	kwargs['month'] = self.kwargs["month"]
-	# 	kwargs['day'] = self.kwargs["day"]
-	# 	return kwargs
 
 	def get_initial(self):
 		date = datetime(self.kwargs["year"], self.kwargs["month"], self.kwargs["day"])

@@ -1,6 +1,8 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.utils import timezone
 
 
 class Tavolo(models.Model):
@@ -35,6 +37,11 @@ class Prenotazione(models.Model):
 		unique_together = [['data_ora', 'queue_place'],
 						   ['data_ora', 'utente']]
 		verbose_name_plural = 'Prenotazioni'
+
+	def save(self, *args, **kwargs):
+		if self.data_ora < timezone.now():
+			raise ValidationError("Non è possibile prenotare pranzi o cene nel passato")
+		super(Prenotazione, self).save(*args, **kwargs)
 
 	def __str__(self):
 		return f'{self.tavolo} - {self.data_ora} - {self.pk}'
