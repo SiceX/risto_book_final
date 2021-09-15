@@ -92,7 +92,7 @@ class PrenotazioneTests(TestCase):
 		self.assertIsInstance(preno, Prenotazione)
 
 		kwargs = {'data_ora': time, 'tavolo': self.tavolo_comodo, 'utente': self.utente_staff_comodo}
-		self.assertRaisesMessage(IntegrityError, "",
+		self.assertRaisesMessage(ValidationError, "",
 								 Prenotazione.objects.create, **kwargs)
 
 	def test_save_enqueue_same_time_same_place(self):
@@ -102,7 +102,7 @@ class PrenotazioneTests(TestCase):
 		self.assertIsInstance(preno, Prenotazione)
 
 		kwargs = {'data_ora': time, 'utente': self.utente_staff_comodo, 'queue_place': 0}
-		self.assertRaisesMessage(IntegrityError, "",
+		self.assertRaisesMessage(ValidationError, "",
 								 Prenotazione.objects.create, **kwargs)
 
 	def test_save_booking_same_user_same_time(self):
@@ -112,7 +112,7 @@ class PrenotazioneTests(TestCase):
 		self.assertIsInstance(preno, Prenotazione)
 
 		kwargs = {'data_ora': time, 'tavolo': self.tavolo_comodo, 'utente': self.utente_comodo}
-		self.assertRaisesMessage(IntegrityError, "",
+		self.assertRaisesMessage(ValidationError, "",
 								 Prenotazione.objects.create, **kwargs)
 
 	# def test_save_many_bookings_many_enqueued(self):
