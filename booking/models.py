@@ -42,13 +42,17 @@ class Prenotazione(models.Model):
 
 	def clean(self):
 		super().clean()
-		if self.data_ora < (timezone.now().date() + datetime.timedelta(days=1)):
+		if self.data_ora.date() < (timezone.now().date() + datetime.timedelta(days=1)):
 			raise ValidationError("non è possibile creare nuove prenotazioni per oggi o nel passato")
 
 		if self.tavolo is None and self.queue_place is None:
 			raise ValidationError("tavolo e queue_place sono entrambi nulli")
 		if self.tavolo is not None and self.queue_place is not None:
 			raise ValidationError("tavolo e queue_place sono entrambi valorizzati")
+	
+	def save(self, *args, **kwargs):
+		self.full_clean()
+		return super(Prenotazione, self).save(*args, **kwargs)
 
 	def __str__(self):
 		return f'{self.tavolo} - {self.data_ora} - {self.pk}'
