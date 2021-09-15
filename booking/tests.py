@@ -21,12 +21,6 @@ class PrenotazioneTests(TestCase):
 	data_giusta_comoda = timezone.now().date() + timedelta(days=1)
 
 	def setUp(self):
-		# self.utente_staff_comodo = User.objects.create(username="TestStaff", email="test@test.com", is_staff=True)
-		# self.utente_comodo = User.objects.create(username="TestPlebeian", email="test@test.com")
-		#
-		# self.tavolo_comodo = Tavolo.objects.create(nome="A1", abilitato=True)
-		# Tavolo.objects.create(nome="A2", abilitato=True)
-		# Tavolo.objects.create(nome="A3", abilitato=False)
 		self.utente_staff_comodo = User.objects.create(username="Staff", email="test1@test.com", is_staff=True)
 		self.utente_comodo = User.objects.create(username="Giovanni", email="test2@test.com")
 		User.objects.create(username="Mario", email="test3@test.com")
@@ -123,7 +117,7 @@ class PrenotazioneTests(TestCase):
 
 		i = 0
 		for utente in utenti:
-			preno = Prenotazione.objects.create(data_ora=time, utente=self.utente_comodo, queue_place=i)
+			preno = Prenotazione.objects.create(data_ora=time, utente=utente, queue_place=i)
 			self.assertIsNotNone(preno)
 			self.assertIsInstance(preno, Prenotazione)
 			i += 1

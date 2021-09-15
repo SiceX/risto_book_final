@@ -39,7 +39,8 @@ class Prenotazione(models.Model):
 
 	class Meta:
 		unique_together = [['data_ora', 'queue_place'],
-						   ['data_ora', 'tavolo']]
+						   ['data_ora', 'tavolo'],
+						   ['data_ora', 'utente']]
 		verbose_name_plural = 'Prenotazioni'
 
 	def clean(self):
