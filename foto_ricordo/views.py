@@ -1,4 +1,4 @@
-from datetime import timezone
+from django.utils import timezone
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -10,7 +10,7 @@ from foto_ricordo.models import FotoRicordo
 
 class FotoRicordoListView(ListView):
     model = FotoRicordo
-    template_name = 'booking/prenotazione/list.html'
+    template_name = 'foto_ricordo/list.html'
 
     def get_queryset(self):
         queryset = super().get_queryset()
