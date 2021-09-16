@@ -11,10 +11,10 @@ def upload_to(instance, filename):
 
 class FotoRicordo(models.Model):
 	foto_ricordo = models.ImageField(upload_to=upload_to, null=False)
-	data_ora = models.DateTimeField(null=False)
+	data = models.DateTimeField(null=False)
 
 	class Meta:
 		verbose_name_plural = 'Foto Ricordo'
 
 	def __str__(self):
-		return f'{self.data_ora} - {self.pk}'
+		return f'{self.data} - {self.pk}'

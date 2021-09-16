@@ -18,7 +18,7 @@ class FotoRicordoListView(ListView):
 
 
 def FotoRicordoCreateView(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         if request.method == 'POST':
             form = CreateFotoRicordoForm(request.POST, request.FILES)
             if form.is_valid():
