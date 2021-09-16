@@ -13,14 +13,14 @@
 {% endblock %}
 
 {% block table_head %}
-	<th>Foto</th>
+{#	<th>Foto</th>#}
 {% endblock %}
 
 {% block table_body %}
 	{% for foto in object_list %}
 		<tr>
 			<td>
-				<img src="{% get_media_prefix %}{{ foto.foto_ricordo }}" alt="foto ricordo">
+				<img src="{% get_media_prefix %}{{ foto.foto_ricordo }}" width="20%" alt="foto ricordo">
 			</td>
 		</tr>
 	{% endfor %}
