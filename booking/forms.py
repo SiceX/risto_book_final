@@ -67,19 +67,19 @@ class DateNavForm(forms.Form):
 				HTML("""<a href="{% url 'booking:dashboard-prenotazioni' """ + previous_date.strftime('%Y')
 				+ """ """ + previous_date.strftime('%m')
 				+ """ """ + previous_date.strftime('%d') + """ %}" 
-				class="btn btn-success"> Giorno Precedente </a>"""),
+				class="btn btn-secondary"> Giorno Precedente </a>"""),
 			)
 
 		next_button = ButtonHolder(
 			HTML("""<a href="{% url 'booking:dashboard-prenotazioni' """ + next_date.strftime('%Y')
 			+ """ """ + next_date.strftime('%m')
 			+ """ """ + next_date.strftime('%d') + """ %}" 
-				class="btn btn-success"> Giorno Successivo </a>"""),
+				class="btn btn-secondary"> Giorno Successivo </a>"""),
 		)
 
 		find_button = ButtonHolder(
 			HTML("""<a href="{% url 'booking:dashboard-prenotazioni-find' %}" 
-				class="btn btn-success"> Trova primo giorno libero </a>"""),
+				class="btn btn-info"> Trova primo giorno libero </a>"""),
 		)
 
 		self.helper = FormHelper()
@@ -88,8 +88,8 @@ class DateNavForm(forms.Form):
 		self.helper.layout = Layout(
 			Field('data', readonly="readonly"),
 			FormActions(
-				previous_button,
 				Submit('submit', 'Visualizza'),
+				previous_button,
 				next_button,
 				find_button
 			)
