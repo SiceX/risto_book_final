@@ -17,6 +17,7 @@
       <sourceFolder url="file://$MODULE_DIR$/static" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/static/css" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/media" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/db_test_population" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.8 (tecnologie-web)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

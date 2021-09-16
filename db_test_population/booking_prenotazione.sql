@@ -1,0 +1,3 @@
+INSERT INTO booking_prenotazione (id, data_ora, utente_id, queue_place, tavolo_id) VALUES (61, '2021-09-23 12:00:00', 3, null, 'A1');
+INSERT INTO booking_prenotazione (id, data_ora, utente_id, queue_place, tavolo_id) VALUES (62, '2021-09-23 19:00:00', 3, null, 'A1');
+INSERT INTO booking_prenotazione (id, data_ora, utente_id, queue_place, tavolo_id) VALUES (63, '2021-09-23 19:00:00', 1, null, 'A2');
