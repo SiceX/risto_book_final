@@ -197,7 +197,8 @@ class DashboardPrenotazioni(ListView, FormMixin):
 		-booleano, vero se l'utente ha già prenotazione per il dato orario, None se user_id non specificato.
 		"""
 		try:
-			prenotati = Prenotazione.objects.filter(data_ora=lookup_date_hour).values_list('tavolo_id', flat=True)
+			prenotati = Prenotazione.objects.filter(data_ora=lookup_date_hour, tavolo__abilitato=True).\
+				values_list('tavolo_id', flat=True)
 		except ObjectDoesNotExist:
 			prenotati = {}
 		in_coda = get_available_queue_place(lookup_date_hour)
@@ -260,7 +261,7 @@ def get_available_queue_place(lookup_date_hour) -> int:
 			Può essere negativo, nel qual caso vuol dire che ci sono ancora tavoli liberi.
 	"""
 	num_tavoli = Tavolo.objects.filter(abilitato=True).count()
-	num_prenotazioni = Prenotazione.objects.filter(data_ora=lookup_date_hour).count()
+	num_prenotazioni = Prenotazione.objects.filter(data_ora=lookup_date_hour, tavolo__abilitato=True).count()
 	return num_prenotazioni - num_tavoli
 
 
