@@ -3,7 +3,7 @@ from django.forms import EmailField, EmailInput, CharField, TextInput, ImageFiel
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-# from profile_picture.models import ImmagineProfilo
+# from foto_ricordo.models import ImmagineProfilo
 
 
 class UserCreationWithEmailForm(UserCreationForm):
@@ -22,7 +22,7 @@ class UserCreationWithEmailForm(UserCreationForm):
 
 
 class EditProfileForm(UserChangeForm):
-    # profile_picture = ImageField(required=False)
+    # foto_ricordo = ImageField(required=False)
     username = CharField(widget=TextInput(attrs={'class': 'form-control'}))
     email = EmailField(widget=EmailInput(attrs={'class': 'form-control'}))
     password = None

@@ -11,7 +11,7 @@
 {#	{% if user.picture.url|length > 0 %}#}
 {#		<img src="{{ userprofile.picture.url }}" width="200px" alt="foto profilo">#}
 {#	{% endif %}#}
-{#	<a href="{% url 'profile_picture:edit_propic' %}" class="nav-link active" aria-current="page">Immagine di Profilo</a>#}
+{#	<a href="{% url 'foto_ricordo:edit_propic' %}" class="nav-link active" aria-current="page">Immagine di Profilo</a>#}
 	<form enctype="multipart/form-data" method="post">{% csrf_token %}
 		{{ form|crispy }}
 		<input type="submit" value="Conferma">
