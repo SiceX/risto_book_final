@@ -18,7 +18,7 @@ class PrenotazioneTests(TestCase):
 	utente_comodo = None
 	utente_staff_comodo = None
 	lista_utenti = []
-	data_giusta_comoda = timezone.now().date() + timedelta(days=1)
+	data_giusta_comoda = (timezone.now() + timedelta(days=1)).replace(hour=12, minute=0, second=0, microsecond=0)
 
 	def setUp(self):
 		self.utente_staff_comodo = User.objects.create(username="Staff", email="test1@test.com", is_staff=True)
@@ -123,7 +123,41 @@ class PrenotazioneTests(TestCase):
 			i += 1
 
 
+# noinspection DuplicatedCode
 class DashboardViewTests(TestCase):
+	tavolo_comodo = None
+	lista_tavoli = []
+	utente_comodo = None
+	utente_staff_comodo = None
+	lista_utenti = []
+	data_giusta_comoda = (timezone.now() + timedelta(days=1)).replace(hour=12, minute=0, second=0, microsecond=0)
+
+	def setUp(self):
+		self.utente_staff_comodo = User.objects.create(username="Staff", email="test1@test.com",
+													   password="lol", is_staff=True)
+		self.utente_comodo = User.objects.create(username="Giovanni", email="test2@test.com",
+												 password="lmao")
+		User.objects.create(username="Mario", email="test3@test.com")
+		User.objects.create(username="Giancarlo", email="test4@test.com")
+		User.objects.create(username="Pietro", email="test5@test.com")
+		User.objects.create(username="Pompelmo", email="test6@test.com")
+		User.objects.create(username="Cavallo", email="test7@test.com")
+
+		self.tavolo_comodo = Tavolo.objects.create(nome="A1", abilitato=True)
+		Tavolo.objects.create(nome="A2", abilitato=True)
+		Tavolo.objects.create(nome="A4", abilitato=False)
+		Tavolo.objects.create(nome="A5", abilitato=False)
+
+		Prenotazione.objects.create(data_ora=self.data_giusta_comoda, tavolo=self.tavolo_comodo,
+									utente=self.utente_staff_comodo)
+
+	def tearDown(self) -> None:
+		self.lista_utenti = []
+		self.lista_tavoli = []
+		User.objects.all().delete()
+		Tavolo.objects.all().delete()
+		Prenotazione.objects.all().delete()
+
 	def test_redirect_if_in_the_past(self):
 		time = timezone.now().date()
 		tomorrow = timezone.now().date() + timedelta(days=1)
@@ -143,5 +177,44 @@ class DashboardViewTests(TestCase):
 								   follow=True)
 		self.assertRedirects(response, expected_url)
 
+	def test_200_if_tomorrow_or_later(self):
+		response = self.client.get(reverse('booking:dashboard-prenotazioni',
+										   kwargs={'year': self.data_giusta_comoda.year,
+												   'month': self.data_giusta_comoda.month,
+												   'day': self.data_giusta_comoda.day}))
+		self.assertEquals(response.status_code, 200)
 
+	def test_no_previous_button_if_tomorrow(self):
+		response = self.client.get(reverse('booking:dashboard-prenotazioni',
+										   kwargs={'year': self.data_giusta_comoda.year,
+												   'month': self.data_giusta_comoda.month,
+												   'day': self.data_giusta_comoda.day}))
+		self.assertNotContains(response, "btn-previous")
+
+	def test_no_book_table_buttons_if_not_authenticated(self):
+		# self.client.login(username='Giovanni', password='lmao')
+		response = self.client.get(reverse('booking:dashboard-prenotazioni',
+										   kwargs={'year': self.data_giusta_comoda.year,
+												   'month': self.data_giusta_comoda.month,
+												   'day': self.data_giusta_comoda.day}))
+		self.assertNotContains(response, "id=\"btn-book-")
+
+	def test_display_enabled_tables(self):
+		response = self.client.get(reverse('booking:dashboard-prenotazioni',
+										   kwargs={'year': self.data_giusta_comoda.year,
+												   'month': self.data_giusta_comoda.month,
+												   'day': self.data_giusta_comoda.day}))
+		for tavolo in Tavolo.objects.filter(abilitato=True):
+			self.assertContains(response, f"id=\"row-{tavolo.nome}")
+
+	def test_display_booked_state(self):
+		response = self.client.get(reverse('booking:dashboard-prenotazioni',
+										   kwargs={'year': self.data_giusta_comoda.year,
+												   'month': self.data_giusta_comoda.month,
+												   'day': self.data_giusta_comoda.day}))
+		for tavolo in Tavolo.objects.filter(abilitato=True):
+			if Prenotazione.objects.filter(data_ora=self.data_giusta_comoda, tavolo=tavolo).exists():
+				self.assertContains(response, f"<td id=\"cell-stato-{tavolo.nome}\">Prenotato</td>")
+			else:
+				self.assertContains(response, f"<td id=\"cell-stato-{tavolo.nome}\">Libero</td>")
 
