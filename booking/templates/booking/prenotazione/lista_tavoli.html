@@ -14,9 +14,10 @@
 			{% if user.is_authenticated and not already_booked %}
 				<a href="{% url 'booking:prenota-tavolo-in-coda' kwargs.year kwargs.month kwargs.day orario %}"
 				   role="button" class="btn btn-info" id="btn-enqueue">Mettiti in coda</a>
-			{% elif user.is_authenticated and already_booked %}
-				<p id="user-already-booked-notice">Hai già fatto una prenotazione per questa fascia oraria, non puoi farne altre.</p>
 			{% endif %}
+		{% endif %}
+		{% if user.is_authenticated and already_booked %}
+			<p id="user-already-booked-notice">Hai già fatto una prenotazione per questa fascia oraria, non puoi farne altre.</p>
 		{% endif %}
 		<table class="table">
 			<thead>
