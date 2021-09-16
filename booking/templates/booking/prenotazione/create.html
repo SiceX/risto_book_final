@@ -13,5 +13,5 @@
 			<h2>Prenota Tavolo</h2>
 		{% endif %}
 	{% endwith %}
-	{% crispy form %}
+	{% crispy form %}{% csrf_token %}
 {% endblock %}
