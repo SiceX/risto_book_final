@@ -124,9 +124,24 @@ class PrenotazioneTests(TestCase):
 
 
 class DashboardViewTests(TestCase):
-	def test_qualcosaltro(self):
+	def test_redirect_if_in_the_past(self):
+		time = timezone.now().date()
+		tomorrow = timezone.now().date() + timedelta(days=1)
+		expected_url = f"/booking/prenotazioni/dashboard/{tomorrow.year}/{tomorrow.month}/{tomorrow.day}"
 		response = self.client.get(reverse('booking:dashboard-prenotazioni',
-										   kwargs={'year': '2021',
-												   'month': '09',
-										   			'day': '12'}))
-		self.assertEqual(response.status_code, 200)
+										   kwargs={'year': time.year,
+												   'month': time.month,
+										   			'day': time.day}),
+								   follow=True)
+		self.assertRedirects(response, expected_url)
+
+		time = timezone.now().date() - timedelta(days=1)
+		response = self.client.get(reverse('booking:dashboard-prenotazioni',
+										   kwargs={'year': time.year,
+												   'month': time.month,
+												   'day': time.day}),
+								   follow=True)
+		self.assertRedirects(response, expected_url)
+
+
+
