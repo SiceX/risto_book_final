@@ -6,7 +6,7 @@ from django.db import models
 
 
 def upload_to(instance, filename):
-	return 'foto_ricordo/%s-%s' % (timezone.now().strftime("%Y%m%d"), filename)
+	return 'foto_ricordo/%s-%s' % (timezone.now().strftime("%Y%m%d-%H%M%S"), filename)
 
 
 class FotoRicordo(models.Model):
