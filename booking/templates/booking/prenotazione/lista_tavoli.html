@@ -1,5 +1,5 @@
 {#<h3>{{ orario }}</h3>#}
-<button class="btn btn-link " type="button" data-toggle="collapse" data-target="#lista_{{ fascia|lower }}"
+<button class="btn btn-dark " type="button" data-toggle="collapse" data-target="#lista_{{ fascia|lower }}"
 		aria-expanded="false" aria-controls="lista_{{ fascia|lower }}">
 	{{ fascia }}
 </button>
@@ -8,7 +8,7 @@
 
 	<div id="lista_{{ fascia|lower }}" class="collapse {{ show }}">
 		{% if in_coda >= 0 %}
-			<p>Tutti i tavoli sono prenotati per questo orario, se sei registrato puoi metterti in coda e verrai notificato
+			<p id="all-booked-notice">Tutti i tavoli sono prenotati per questo orario, se sei registrato puoi metterti in coda e verrai notificato
 				se un tavolo si sarà liberato. <br/>
 				Al momento ci sono {{ in_coda }} persone in lista d'attesa. </p>
 			{% if user.is_authenticated and not already_booked %}
@@ -30,7 +30,7 @@
 			</thead>
 			<tbody>
 			{% for tavolo in object_list %}
-				<tr>
+				<tr id="row-{{ tavolo.nome }}">
 					<td>{{ tavolo.nome }}</td>
 					{% if tavolo.nome in prenotati %}
 						<td>Prenotato</td>

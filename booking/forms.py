@@ -67,14 +67,14 @@ class DateNavForm(forms.Form):
 				HTML("""<a href="{% url 'booking:dashboard-prenotazioni' """ + previous_date.strftime('%Y')
 				+ """ """ + previous_date.strftime('%m')
 				+ """ """ + previous_date.strftime('%d') + """ %}" 
-				class="btn btn-secondary"> Giorno Precedente </a>"""),
+				class="btn btn-secondary" id="btn-previous"> Giorno Precedente </a>"""),
 			)
 
 		next_button = ButtonHolder(
 			HTML("""<a href="{% url 'booking:dashboard-prenotazioni' """ + next_date.strftime('%Y')
 			+ """ """ + next_date.strftime('%m')
 			+ """ """ + next_date.strftime('%d') + """ %}" 
-				class="btn btn-secondary"> Giorno Successivo </a>"""),
+				class="btn btn-secondary" id="btn-next"> Giorno Successivo </a>"""),
 		)
 
 		find_button = ButtonHolder(
