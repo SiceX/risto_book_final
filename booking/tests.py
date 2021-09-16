@@ -199,13 +199,15 @@ class DashboardViewTests(TestCase):
 												   'day': self.data_giusta_comoda.day}))
 		self.assertNotContains(response, "id=\"btn-book-")
 
-	def test_display_enabled_tables(self):
+	def test_display_only_enabled_tables(self):
 		response = self.client.get(reverse('booking:dashboard-prenotazioni',
 										   kwargs={'year': self.data_giusta_comoda.year,
 												   'month': self.data_giusta_comoda.month,
 												   'day': self.data_giusta_comoda.day}))
 		for tavolo in Tavolo.objects.filter(abilitato=True):
 			self.assertContains(response, f"id=\"row-{tavolo.nome}")
+		for tavolo in Tavolo.objects.filter(abilitato=False):
+			self.assertNotContains(response, f"id=\"row-{tavolo.nome}")
 
 	def test_display_booked_state(self):
 		response = self.client.get(reverse('booking:dashboard-prenotazioni',
