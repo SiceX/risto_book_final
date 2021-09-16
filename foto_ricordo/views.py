@@ -18,12 +18,15 @@ class FotoRicordoListView(ListView):
 
 
 def FotoRicordoCreateView(request):
-    if request.method == 'POST':
-        form = CreateFotoRicordoForm(request.POST, request.FILES)
-        if form.is_valid():
-            # file is saved
-            form.save()
-            return HttpResponseRedirect('/home')
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            form = CreateFotoRicordoForm(request.POST, request.FILES)
+            if form.is_valid():
+                # file is saved
+                form.save()
+                return HttpResponseRedirect('/foto_ricordo/foto_ricordo/list')
+        else:
+            form = CreateFotoRicordoForm()
+        return render(request, 'foto_ricordo/create_foto_ricordo.html', {'form': form})
     else:
-        form = CreateFotoRicordoForm()
-    return render(request, 'foto_ricordo/create_foto_ricordo.html', {'form': form})
+        return HttpResponseRedirect('/home')

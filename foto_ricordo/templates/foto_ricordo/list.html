@@ -4,6 +4,13 @@
 
 {% block content_title %}Foto ricordo caricate dagli utenti!{% endblock %}
 
+{% block optional_content %}
+	{% if user.is_authenticated %}
+		<a href="{% url 'foto_ricordo:foto-ricordo-create' %}" role="button" class="btn btn-primary"
+		   id="btn-go-to-upload">Carica una tua foto ricordo!</a>
+	{% endif %}
+{% endblock %}
+
 {% block table_head %}
 	<th>Foto</th>
 {% endblock %}
