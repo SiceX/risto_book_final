@@ -80,7 +80,7 @@ class PrenotazioneDelete(LoginRequiredMixin, DeleteView):
 class PrenotazioneCreate(LoginRequiredMixin, CreateView):
 	model = Prenotazione
 	template_name = 'booking/prenotazione/create.html'
-	success_url = reverse_lazy('home')
+	success_url = reverse_lazy('booking:prenotazione-list')
 	form_class = PrenotazioneForm
 
 	def get_initial(self):
