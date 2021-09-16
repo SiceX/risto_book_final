@@ -36,9 +36,9 @@
 						<td>Prenotato</td>
 
 						<td>
-						{% if user.is_authenticated %}
-							<a href="" role="button" class="btn btn-info disabled">Prenota Tavolo</a>
-						{% endif %}
+							{% if user.is_authenticated %}
+								<a id="btn-book-{{ tavolo.nome }}" href="" role="button" class="btn btn-info disabled">Prenota Tavolo</a>
+							{% endif %}
 							<a href="{% url 'booking:dashboard-prenotazioni-find-for-table' tavolo.nome %}"
 							   role="button" class="btn btn-primary">Trova primo giorno libero per questo tavolo</a>
 						</td>
@@ -48,12 +48,12 @@
 
 						{% if user.is_authenticated and not already_booked %}
 							<td>
-								<a href="{% url 'booking:prenota-tavolo' tavolo.nome kwargs.year kwargs.month kwargs.day orario %}"
+								<a id="btn-book-{{ tavolo.nome }}" href="{% url 'booking:prenota-tavolo' tavolo.nome kwargs.year kwargs.month kwargs.day orario %}"
 								   role="button" class="btn btn-primary">Prenota Tavolo</a>
 							</td>
 						{% elif user.is_authenticated and already_booked%}
 							<td>
-								<a href="" role="button" class="btn btn-info disabled">Prenota Tavolo</a>
+								<a id="btn-book-{{ tavolo.nome }}" href="" role="button" class="btn btn-info disabled">Prenota Tavolo</a>
 							</td>
 						{% endif %}
 					{% endif %}
