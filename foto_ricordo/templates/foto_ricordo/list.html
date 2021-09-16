@@ -1,35 +1,17 @@
 {% extends 'base_list.html' %}
 
-{% block list_title %}Prenotazioni{% endblock %}
+{% block list_title %}Foto Ricordo{% endblock %}
 
-{% block content_title %}Prenotazioni{% endblock %}
+{% block content_title %}Foto ricordo caricate dagli utenti!{% endblock %}
 
 {% block table_head %}
-	<th>Tavolo</th>
-	<th>Data e Ora</th>
-	<th>Posizione in Lista d'Attesa</th>
-	<th>Azioni</th>
+	<th>Foto</th>
 {% endblock %}
 
 {% block table_body %}
-	{% for prenotazione in object_list %}
+	{% for foto in object_list %}
 		<tr>
-			{% if prenotazione.tavolo != None %}
-				<td>{{ prenotazione.tavolo }}</td>
-			{% else %}
-				<td>Non ancora assegnato</td>
-			{% endif %}
-			<td>{{ prenotazione.data_ora|date:"Y/m/d H:i" }}</td>
-			{% if prenotazione.queue_place >= 0 %}
-				<td>{{ prenotazione.queue_place }}°</td>
-			{% else %}
-				<td>Tavolo prenotato</td>
-			{% endif %}
-			<td>
-				<a href="{% url 'booking:prenotazione-delete' prenotazione.pk %}" role="button" class="btn btn-danger">
-					Cancella Prenotazione
-				</a>
-			</td>
+			<img src="{{ foto.foto_ricordo }}" alt="foto ricordo">
 		</tr>
 	{% endfor %}
 {% endblock %}
