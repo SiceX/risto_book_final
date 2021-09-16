@@ -1,25 +1,18 @@
 import logging
-import pytz
-from collections import Counter
-from functools import partial
 from datetime import datetime, timedelta
-from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from typing import Tuple
+
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
 from django.db.models import F
-from django.forms import DateInput
-from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, DetailView, ListView, CreateView, RedirectView
-from django.views.generic.edit import FormMixin, DeleteView
-from django.utils.timezone import make_aware
 from django.utils import timezone
-from extra_views import ModelFormSetView
-from typing import Tuple
+from django.utils.timezone import make_aware
+from django.views.generic import ListView, CreateView, RedirectView
+from django.views.generic.edit import FormMixin, DeleteView
 
 from booking.forms import DateNavForm, PrenotazioneForm
 from booking.models import Tavolo, Prenotazione
@@ -115,7 +108,7 @@ class PrenotazioneCreate(LoginRequiredMixin, CreateView):
 		return HttpResponseRedirect(self.get_success_url())
 
 
-def dashboardPrenotazioniController(request, year, month, day):
+def dashboard_prenotazioni_controller(request, year, month, day):
 	kwargs = {'year': year, 'month': month, 'day': day}
 	date = datetime(year, month, day)
 	if date.date() < (timezone.now().date() + timedelta(days=1)):

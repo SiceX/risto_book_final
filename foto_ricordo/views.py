@@ -1,8 +1,6 @@
-from django.utils import timezone
-
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.views.generic import UpdateView, ListView
+from django.views.generic import ListView
 
 from foto_ricordo.forms import CreateFotoRicordoForm
 from foto_ricordo.models import FotoRicordo
@@ -17,7 +15,7 @@ class FotoRicordoListView(ListView):
     #     return queryset.filter(utente=self.request.user,  data_ora__gte=timezone.now())
 
 
-def FotoRicordoCreateView(request):
+def foto_ricordo_create_view(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
             form = CreateFotoRicordoForm(request.POST, request.FILES)

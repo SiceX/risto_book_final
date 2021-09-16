@@ -1,11 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, DeleteView
 from extra_views import ModelFormSetView
 
-from admin_tools import forms
 from admin_tools.forms import GestisciTavoliForm
 from booking.models import Tavolo
 

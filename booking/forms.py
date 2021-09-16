@@ -1,12 +1,11 @@
 from datetime import datetime, timedelta
 
 from crispy_forms.bootstrap import FormActions
-from crispy_forms.layout import Submit, Layout, Field, Button, ButtonHolder, HTML
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Layout, Field, ButtonHolder, HTML
 from django import forms
 from django.core.exceptions import ValidationError
-from django.forms import DateInput, TextInput, HiddenInput
-from crispy_forms.helper import FormHelper
-from django.urls import reverse_lazy
+from django.forms import DateInput, HiddenInput
 from django.utils import timezone
 
 from booking.models import Prenotazione

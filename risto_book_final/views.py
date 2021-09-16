@@ -1,6 +1,5 @@
 import logging
 
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, UpdateView

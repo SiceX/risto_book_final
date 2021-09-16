@@ -1,6 +1,5 @@
-from django import forms
-from crispy_forms.layout import Submit, Layout, Field, Button, ButtonHolder, HTML, Fieldset
 from crispy_forms.helper import FormHelper
+from django import forms
 
 from booking.models import Tavolo
 

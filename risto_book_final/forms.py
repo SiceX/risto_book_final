@@ -1,9 +1,6 @@
-from django.forms import EmailField, EmailInput, CharField, TextInput, ImageField, IntegerField, FileField
-
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-
-# from foto_ricordo.models import ImmagineProfilo
+from django.contrib.auth.models import User
+from django.forms import EmailField, EmailInput, CharField, TextInput
 
 
 class UserCreationWithEmailForm(UserCreationForm):
@@ -22,7 +19,6 @@ class UserCreationWithEmailForm(UserCreationForm):
 
 
 class EditProfileForm(UserChangeForm):
-    # foto_ricordo = ImageField(required=False)
     username = CharField(widget=TextInput(attrs={'class': 'form-control'}))
     email = EmailField(widget=EmailInput(attrs={'class': 'form-control'}))
     password = None
