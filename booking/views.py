@@ -167,7 +167,6 @@ class DashboardPrenotazioni(ListView, FormMixin):
 	def get_context_data(self, **kwargs):
 		ctx = super(DashboardPrenotazioni, self).get_context_data(**kwargs)
 
-		num_tavoli = Tavolo.objects.count()
 		year = self.kwargs["year"]
 		month = self.kwargs["month"]
 		day = self.kwargs["day"]
