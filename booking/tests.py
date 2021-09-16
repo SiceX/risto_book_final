@@ -133,10 +133,12 @@ class DashboardViewTests(TestCase):
 	data_giusta_comoda = (timezone.now() + timedelta(days=1)).replace(hour=12, minute=0, second=0, microsecond=0)
 
 	def setUp(self):
-		self.utente_staff_comodo = User.objects.create(username="Staff", email="test1@test.com",
-													   password="lol", is_staff=True)
-		self.utente_comodo = User.objects.create(username="Giovanni", email="test2@test.com",
-												 password="lmao")
+		self.utente_staff_comodo = User.objects.create(username="Staff", email="test1@test.com", is_staff=True)
+		self.utente_staff_comodo.set_password('lol')
+		self.utente_staff_comodo.save()
+		self.utente_comodo = User.objects.create(username="Giovanni", email="test2@test.com")
+		self.utente_comodo.set_password('lmao')
+		self.utente_comodo.save()
 		User.objects.create(username="Mario", email="test3@test.com")
 		User.objects.create(username="Giancarlo", email="test4@test.com")
 		User.objects.create(username="Pietro", email="test5@test.com")
@@ -192,12 +194,19 @@ class DashboardViewTests(TestCase):
 		self.assertNotContains(response, "btn-previous")
 
 	def test_no_book_table_buttons_if_not_authenticated(self):
-		# self.client.login(username='Giovanni', password='lmao')
 		response = self.client.get(reverse('booking:dashboard-prenotazioni',
 										   kwargs={'year': self.data_giusta_comoda.year,
 												   'month': self.data_giusta_comoda.month,
 												   'day': self.data_giusta_comoda.day}))
 		self.assertNotContains(response, "id=\"btn-book-")
+
+	def test_book_table_buttons_if_authenticated(self):
+		self.client.login(username='Giovanni', password='lmao')
+		response = self.client.get(reverse('booking:dashboard-prenotazioni',
+										   kwargs={'year': self.data_giusta_comoda.year,
+												   'month': self.data_giusta_comoda.month,
+												   'day': self.data_giusta_comoda.day}))
+		self.assertContains(response, "id=\"btn-book-")
 
 	def test_display_only_enabled_tables(self):
 		response = self.client.get(reverse('booking:dashboard-prenotazioni',
