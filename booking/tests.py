@@ -126,6 +126,7 @@ class PrenotazioneTests(TestCase):
 # noinspection DuplicatedCode
 class DashboardViewTests(TestCase):
 	tavolo_comodo = None
+	secondo_tavolo_comodo = None
 	lista_tavoli = []
 	utente_comodo = None
 	utente_staff_comodo = None
@@ -146,7 +147,7 @@ class DashboardViewTests(TestCase):
 		User.objects.create(username="Cavallo", email="test7@test.com")
 
 		self.tavolo_comodo = Tavolo.objects.create(nome="A1", abilitato=True)
-		Tavolo.objects.create(nome="A2", abilitato=True)
+		self.secondo_tavolo_comodo = Tavolo.objects.create(nome="A2", abilitato=True)
 		Tavolo.objects.create(nome="A4", abilitato=False)
 		Tavolo.objects.create(nome="A5", abilitato=False)
 
@@ -228,4 +229,31 @@ class DashboardViewTests(TestCase):
 				self.assertContains(response, f"<td id=\"cell-stato-{tavolo.nome}\">Prenotato</td>")
 			else:
 				self.assertContains(response, f"<td id=\"cell-stato-{tavolo.nome}\">Libero</td>")
+
+	def test_display_find_free_day_for_table(self):
+		response = self.client.get(reverse('booking:dashboard-prenotazioni',
+										   kwargs={'year': self.data_giusta_comoda.year,
+												   'month': self.data_giusta_comoda.month,
+												   'day': self.data_giusta_comoda.day}))
+		prenotati_pranzo = response.context_data['prenotati_pranzo']
+		for tavolo_name in prenotati_pranzo:
+			self.assertContains(response, f"id=\"btn-find-free-{tavolo_name}\"")
+
+	def test_display_user_already_booked_notice(self):
+		self.client.login(username='Staff', password='lol')
+		response = self.client.get(reverse('booking:dashboard-prenotazioni',
+										   kwargs={'year': self.data_giusta_comoda.year,
+												   'month': self.data_giusta_comoda.month,
+												   'day': self.data_giusta_comoda.day}))
+		self.assertContains(response, "id=\"user-already-booked-notice\"")
+
+	def test_display_all_booked_notice(self):
+		Prenotazione.objects.create(data_ora=self.data_giusta_comoda, tavolo=self.secondo_tavolo_comodo,
+									utente=self.utente_comodo)
+		self.client.login(username='Giovanni', password='lmao')
+		response = self.client.get(reverse('booking:dashboard-prenotazioni',
+										   kwargs={'year': self.data_giusta_comoda.year,
+												   'month': self.data_giusta_comoda.month,
+												   'day': self.data_giusta_comoda.day}))
+		self.assertContains(response, "id=\"all-booked-notice\"")
 
